@@ -13,5 +13,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model User {
-  id @d
+  id                 String              @id @default(cuid())
+  email              String              @unique
+  name               String?
+  token              String?
+  password           String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  contestSubmissions ContestSubmission[]
+  role               UserRole            @default(USER)
+  submissions        Submission[]
+  contestPoints      ContestPoints[]
 }
