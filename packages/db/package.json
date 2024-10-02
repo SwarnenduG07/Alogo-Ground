@@ -20,7 +20,11 @@
     "@types/node": "^22.7.4",
     "prisma": "5.20.0"
   },
+  "exports": {
+      "./client":"./src/index.ts"
+  },
   "dependencies": {
-    "@prisma/client": "5.20.0"
+    "@prisma/client": "5.20.0",
+    "@repo/db":"*"
   }
 }

@@ -18,10 +18,13 @@ importers:
         specifier: ^5.4.5
         version: 5.6.2
 
-  apps/docs:
+  apps/web:
     dependencies:
+      '@repo/db':
+        specifier: '*'
+        version: link:../../packages/db
       '@repo/ui':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../packages/ui
       next:
         specifier: 14.2.6
@@ -58,52 +61,20 @@ importers:
         specifier: ^5
         version: 5.6.2
 
-  apps/web:
-    dependencies:
-      '@repo/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      next:
-        specifier: 14.2.6
-        version: 14.2.6(react-dom@18.3.1)(react@18.3.1)
-      react:
-        specifier: 18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: 18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@types/node':
-        specifier: ^20
-        version: 20.16.10
-      '@types/react':
-        specifier: ^18
-        version: 18.3.10
-      '@types/react-dom':
-        specifier: ^18
-        version: 18.3.0
-      eslint:
-        specifier: ^8
-        version: 8.57.1
-      eslint-config-next:
-        specifier: 14.2.6
-        version: 14.2.6(eslint@8.57.1)(typescript@5.6.2)
-      typescript:
-        specifier: ^5
-        version: 5.6.2
+  packages/common: {}
 
   packages/db:
     dependencies:
       '@prisma/client':
         specifier: 5.20.0
         version: 5.20.0(prisma@5.20.0)
+      '@repo/db':
+        specifier: '*'
+        version: 'link:'
     devDependencies:
+      '@types/node':
+        specifier: ^22.7.4
+        version: 22.7.4
       prisma:
         specifier: 5.20.0
         version: 5.20.0
@@ -788,6 +759,12 @@ packages:
 
   /@types/node@20.16.10:
     resolution: {integrity: sha512-vQUKgWTjEIRFCvK6CyriPH3MZYiYlNy0fKiEYHWbcoWLEgs4opurGGKlebrTLqdSMIbXImH6XExNiIyNUv3WpA==}
+    dependencies:
+      undici-types: 6.19.8
+    dev: true
+
+  /@types/node@22.7.4:
+    resolution: {integrity: sha512-y+NPi1rFzDs1NdQHHToqeiX2TIS79SWEAw9GYhkkx8bD0ChpfqC+n2j5OXOCpzfojBEBt6DnEnnG9MY0zk1XLg==}
     dependencies:
       undici-types: 6.19.8
     dev: true

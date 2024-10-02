@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
 
+
 export default function Home() {
   return (
     <div className={styles.page}>
@@ -91,7 +92,9 @@ export default function Home() {
             width={16}
             height={16}
           />
-          Go to nextjs.org →
+       <Button children={undefined} appName={""}>
+        
+       </Button>
         </a>
       </footer>
     </div>

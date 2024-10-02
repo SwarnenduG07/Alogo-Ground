@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "algoground",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -13,6 +13,10 @@
     "typescript": "^5.4.5"
   },
   "packageManager": "pnpm@8.15.6",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "engines": {
     "node": ">=18"
   }
