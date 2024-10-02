@@ -1,0 +1,15 @@
+{
+  "name": "@repo/common",
+  "version": "1.0.0",
+  "exports": {
+    "./language":"./language/index.ts",
+    ".": "./zod/index.ts"
+  },
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
+}
