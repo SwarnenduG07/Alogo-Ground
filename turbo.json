@@ -1,7 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "tasks": {
+  "pipeline": {
+     "db:generate": {
+      "cache": false
+     },
+     "db:push": {
+      "cache": false
+     },
+
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -15,4 +22,5 @@
       "persistent": true
     }
   }
+  
 }
