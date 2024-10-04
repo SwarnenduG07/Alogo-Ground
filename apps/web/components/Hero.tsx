@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from './ui/button'
 
 const Hero = () => {
   return (
@@ -11,6 +12,11 @@ const Hero = () => {
                Meet the platform for modern Data Structure practice <br /> 
                qiality questions, contests, and resources.
             </h1>
+            <div className='mt-3'>
+                <Button className='bg-neutral-200 text-black hover:bg-slate-200 text-sm font-normal h-10 w-24'>
+                    Start Building
+                </Button>
+            </div>
         </div>
     </main>
   )
