@@ -8,8 +8,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"],
-      "outputs": [".next/**", "dist/**"]
+      "dependsOn": ["^lint"]
     },
     "dev": {
       "cache": false,
