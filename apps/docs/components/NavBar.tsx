@@ -14,7 +14,7 @@ const NavBar = () => {
           <a href='#' className='text-white hover:text-gray-300'>Features</a>
           <a href='#' className='text-white hover:text-gray-300'>Pricing</a>
           <div>
-         
+              
           </div>
         </div>
       </nav>
