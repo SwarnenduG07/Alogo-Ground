@@ -1,9 +1,9 @@
-import { Button } from '@repo/ui/button'
+import { Button } from "./ui/button"
 import React from 'react'
 
 const NavBar = () => {
   return (
-    <div className='bg-transparent backdrop-blur-md mx-32 py-3 mt-5 rounded-2xl border border-s-transparent border-slate-700'>
+    <div className='bg-transparent backdrop-blur-md mx-32 py-1.5 mt-5 rounded-xl border border-s-transparent border-slate-700'>
       <nav className='flex justify-between items-center'>
 
         <div className='font-mono ml-8 font-normal text-neutral-100'>
@@ -13,9 +13,14 @@ const NavBar = () => {
         <div className='hidden md:flex space-x-8 mr-5'>
           <a href='#' className='text-white hover:text-gray-300'>Features</a>
           <a href='#' className='text-white hover:text-gray-300'>Pricing</a>
-          <div>
-              
-          </div>
+          <span className="space-x-3">
+            <Button className="h-7 text-sm font-semibold delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-purple-500  transition duration-500 ease-in-out" variant="outline">
+                Login
+            </Button>
+            <Button className="h-7 delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-purple-500  transition duration-500 ease-in-out">
+                Signup
+            </Button>
+          </span>
         </div>
       </nav>
     </div>
