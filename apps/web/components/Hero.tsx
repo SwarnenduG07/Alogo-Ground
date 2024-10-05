@@ -14,7 +14,7 @@ const Hero = () => {
             </h1>
             <div className='mt-4'>
                 <Button className='bg-neutral-200 text-black  text-sm font-normal h-9 delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-cyan-400  transition duration-500 ease-in-out rounded-xl'>
-                    Start Building
+                    Start practising
                 </Button>
             </div>
         </div>
