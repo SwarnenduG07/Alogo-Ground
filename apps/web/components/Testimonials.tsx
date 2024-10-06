@@ -9,8 +9,8 @@ const Testimonials = () => {
         <h1 className='flex justify-center text-zinc-700 h-10 text-xl font-sans font-semibold'>
             From next-gen startups to established enterprises.
         </h1>
-        <div>
-            
+        <div className='flex justify-center text-white'>
+              Google , Microsoft
         </div>
     </div>
   )
