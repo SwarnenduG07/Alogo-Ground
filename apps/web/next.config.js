@@ -1,5 +1,10 @@
-/** @type {import('next').NextConfig} */
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+
 module.exports = {
-  reactStrictMode: true,
-  transpilePackages: ["@repo/ui"],
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.plugins.push(new CaseSensitivePathsPlugin());
+    }
+    return config;
+  },
 };
