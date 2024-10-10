@@ -4,6 +4,7 @@ import z from "zod";
 import { pages } from "next/dist/build/templates/app-page";
 import { signIn } from "next-auth/react";
 import { dbCLient } from "@/src/app/db";
+import { use } from "react";
 
 
 // Password validation schema
@@ -28,11 +29,11 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        firstname: { label: "FirstName", type: "text", placeholder: "John Doe" }, 
-        lastname: { label: "FirstName", type: "text", placeholder: "John Doe" }, 
+        firstname: { label: "firstname", type: "text", placeholder: "John" }, 
+        lastname: { label: "lastname", type: "text", placeholder: "Doe" }, 
+        username: { label: "username", type: "text", placeholder: "useranme" }, 
         email: { label: "Email", type: "text", placeholder: "johndoe@gmail.com" },
         password: { label: "Password", type: "password", required: true },
-        otp: { label: "otp", type: "text", placeholder: "Enter the OTP", required: true },
       },
       
       async authorize(credentials: any) {
@@ -40,7 +41,9 @@ export const authOptions = {
         try {
           schema.parse({
             email: credentials.email,
+            username:credentials.username,
             firstname: credentials.firstname,
+            lastname: credentials.lastname,
             password: credentials.password,
           });
         } catch (e) {
