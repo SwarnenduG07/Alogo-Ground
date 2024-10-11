@@ -4,7 +4,6 @@ import z from "zod";
 import { pages } from "next/dist/build/templates/app-page";
 import { signIn } from "next-auth/react";
 import { dbCLient } from "@/src/app/db";
-import { use } from "react";
 
 
 // Password validation schema
@@ -37,7 +36,6 @@ export const authOptions = {
       },
       
       async authorize(credentials: any) {
-        // Validate credentials using Zod
         try {
           schema.parse({
             email: credentials.email,
@@ -61,7 +59,7 @@ export const authOptions = {
           if (passwordValidation) {
             return {
               id: existingUser.id.toString(),
-              username: existingUser.username, // Corrected typo here
+              username: existingUser.username, 
               email: existingUser.email,
             };
           }
@@ -76,7 +74,7 @@ export const authOptions = {
               email: credentials.email,
               username: credentials.username,
               password: hashedPassword,
-              firstname: credentials.firstname, // Corrected typo here
+              firstname: credentials.firstname,
             },
           });
 
