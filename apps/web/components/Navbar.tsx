@@ -1,5 +1,5 @@
 "use client"
-import { signIn } from "next-auth/react"
+import { signIn} from "next-auth/react"
 import { Button } from "./ui/button"
 import React from 'react'
 
@@ -23,7 +23,7 @@ const NavBar = () => {
             >
                 Login
             </Button>
-            <Button className="h-7 delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-purple-500  transition duration-500 ease-in-out">
+            <Button className="h-7 delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-purple-500  transition duration-500 ease-in-out" onClick={() => signIn()}>
                 Signup
             </Button>
           </span>
