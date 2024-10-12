@@ -2,8 +2,10 @@
 import { signIn} from "next-auth/react"
 import { Button } from "./ui/button"
 import React from 'react'
+import { useRouter } from "next/navigation"
 
 const NavBar = () => {
+  const router = useRouter()
   return (
     <div className='bg-transparent backdrop-blur-md mx-32 py-1.5 mt-5 rounded-xl border border-s-transparent border-slate-700'>
       <nav className='flex justify-between items-center'>
@@ -23,7 +25,11 @@ const NavBar = () => {
             >
                 Login
             </Button>
-            <Button className="h-7 delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-purple-500  transition duration-500 ease-in-out" onClick={() => signIn()}>
+            <Button className="h-7 delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-purple-500  transition duration-500 ease-in-out" 
+             onClick={() => 
+              router.push("/signup")
+            }
+            >
                 Signup
             </Button>
           </span>
