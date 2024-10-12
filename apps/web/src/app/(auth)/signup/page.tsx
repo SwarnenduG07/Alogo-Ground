@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import {
   IconBrandGithub,
   IconBrandGoogle,
-  IconBrandOnlyfans,
 } from "@tabler/icons-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -20,41 +19,34 @@ export  default function SignupFormDemo() {
       <h2 className="font-bold text-xl text-neutral-200">
         Welcome to Algoprep
       </h2>
-      <p className="text-neutral-600 text-sm max-w-sm mt-2 -300">
-        Signup to Algoperp for th 
+      <p className="text-neutral-50 text-sm max-w-sm mt-2 -300">
+        Signup to Algoperp for Dsa Practice
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="firstname" className="text-red-200">  First name</Label>
+            <Label htmlFor="firstname" className="text-neutral-50">  First name</Label>
             <Input id="firstname" placeholder="Tyler" type="text" />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="lastname">Last name</Label>
+            <Label htmlFor="lastname" className="text-neutral-50">Last name</Label>
             <Input id="lastname" placeholder="Durden" type="text" />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="username">username</Label>
+            <Label htmlFor="username" className="text-neutral-50">username</Label>
             <Input id="username" placeholder="username" type="text" className="text-white"/>
           </LabelInputContainer>
         </div>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
+        <LabelInputContainer className="mb-4 text-neutral-50">
+          <Label htmlFor="email" className="text-neutral-50">Email Address</Label>
           <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
         </LabelInputContainer>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="password">Password</Label>
+        <LabelInputContainer className="mb-4 text-neutral-50">
+          <Label htmlFor="password" className="text-neutral-50">Password</Label>
           <Input id="password" placeholder="••••••••" type="password" />
         </LabelInputContainer>
-        <LabelInputContainer className="mb-8">
-          <Label htmlFor="twitterpassword">Your twitter password</Label>
-          <Input
-            id="twitterpassword"
-            placeholder="••••••••"
-            type="twitterpassword"
-          />
-        </LabelInputContainer>
+       
 
         <button
           className="bg-gradient-to-br relative group/btn from-black -900 -900 to-neutral-600 block -800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] 0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"

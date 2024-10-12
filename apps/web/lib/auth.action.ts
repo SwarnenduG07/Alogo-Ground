@@ -100,7 +100,7 @@ export const authOptions = {
       return url.startsWith(baseUrl) ? url : baseUrl + "/dashboard";
     },
   },
-  // pages: {
-  //   signIn: "/signin"
-  // }
+  pages: {
+    signIn: "/signin"
+  }
 };
