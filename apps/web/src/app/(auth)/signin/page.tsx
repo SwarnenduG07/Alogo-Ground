@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
@@ -11,23 +10,20 @@ export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-//   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
     const result = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
       email,
       password,
     });
 
     if (result?.error) {
       setError("Invalid email or password");
-    } else {
-    //   router.push("/dashboard"); // Redirect to dashboard after successful login
-    }
+    } 
   };
 
   return (

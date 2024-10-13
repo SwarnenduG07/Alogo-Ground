@@ -111,6 +111,14 @@ export const authOptions = {
       session.user.email = token.email;
       return session;
     },
+    async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
+      // Redirect after sign-in
+      if (url === '/signin') {
+        return `${baseUrl}/contest`;  // Change to the desired page after sign-in
+      }
+      // Redirect after sign-up or any other case
+      return `${baseUrl}/contest`;  // Change to the desired page after sign-up
+    },
   },
   pages: {
     signIn: "/signin",

@@ -29,7 +29,7 @@ export default function SignupFormDemo() {
     try {
       // Call NextAuth signIn with the credentials provider
       const result = await signIn("credentials", {
-        redirect: false, // Disable redirect to handle it manually
+        redirect: true, // Disable redirect to handle it manually
         firstname: formData.firstname,
         lastname: formData.lastname,
         username: formData.username,
