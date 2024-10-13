@@ -3,19 +3,27 @@ import bcrypt from "bcrypt";
 import z from "zod";
 import { dbCLient } from "@/src/app/db";
 
+
+const passwordSchema = z.string().min(6).max(50).refine(
+  (val) => /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,50}$/.test(val),
+  {
+      message: "Password must contain at least one uppercase letter, one number, and one special character"
+  }
+);
+
 // Validation schema for sign-up
 const signUpSchema = z.object({
   email: z.string().email(),
   username: z.string().min(3).max(30),
   firstname: z.string().min(3).max(30),
   lastname: z.string().min(2).max(30),
-  password: z.string().min(6).max(50),
+  password: passwordSchema
 });
 
 // Validation schema for sign-in
 const signInSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6).max(50),
+  password: passwordSchema,
 });
 
 export const authOptions = {
@@ -112,12 +120,10 @@ export const authOptions = {
       return session;
     },
     async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
-      // Redirect after sign-in
       if (url === '/signin') {
-        return `${baseUrl}/contest`;  // Change to the desired page after sign-in
+        return `${baseUrl}/contest`;  
       }
-      // Redirect after sign-up or any other case
-      return `${baseUrl}/contest`;  // Change to the desired page after sign-up
+      return `${baseUrl}/contest`;  
     },
   },
   pages: {

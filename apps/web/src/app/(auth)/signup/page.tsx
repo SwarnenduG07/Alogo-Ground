@@ -1,11 +1,15 @@
-"use client";
+"use client"
 import React, { useState } from "react";
-import { signIn } from "next-auth/react"; // Import signIn to trigger auth
+import { signIn } from "next-auth/react"; 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 
+const hasUpperCase = (password: string) => /[A-Z]/.test(password);
+const hasNumber =  (password: string) =>  /[0-9]/.test(password);
+const hasSpecialChar = (password: string) => /[!@#$%^&*(),.?":{}|<>]/.test(password);
+const inMinLength = (password: string) => password.length >= 6;
 
 export default function SignupFormDemo() {
   const [formData, setFormData] = useState({
@@ -13,8 +17,8 @@ export default function SignupFormDemo() {
     lastname: "",
     username: "",
     email: "",
-    password: "",
   });
+  const [password, setPassword] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -26,27 +30,7 @@ export default function SignupFormDemo() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      // Call NextAuth signIn with the credentials provider
-      const result = await signIn("credentials", {
-        redirect: true, // Disable redirect to handle it manually
-        firstname: formData.firstname,
-        lastname: formData.lastname,
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (result?.error) {
-        console.log("Sign up failed:", result.error);
-        // Handle error (e.g., display message to user)
-      } else {
-        console.log("Sign up successful!");
-        // Handle successful sign up (e.g., redirect to dashboard)
-      }
-    } catch (error) {
-      console.error("Error signing up:", error);
-    }
+    // Example sign-in logic here
   };
 
   return (
@@ -54,7 +38,7 @@ export default function SignupFormDemo() {
       <h2 className="font-bold text-xl text-neutral-200">
         Welcome to Algoprep
       </h2>
-      <p className="text-neutral-50 text-sm max-w-sm mt-2 -300">
+      <p className="text-neutral-50 text-sm max-w-sm mt-2">
         Signup to Algoperp for DSA Practice
       </p>
 
@@ -124,10 +108,24 @@ export default function SignupFormDemo() {
             id="password"
             placeholder="••••••••"
             type="password"
-            value={formData.password}
-            onChange={handleInputChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
+     <ul className="text-sm mt-2 text-neutral-50">
+         <li className={cn("mt-1", hasUpperCase(password) ? "text-green-500" : "text-neutral-50", !hasUpperCase(password) && password.length > 0 ? "text-red-500" : "")}>
+        At least one uppercase letter
+        </li>
+        <li className={cn("mt-1", hasNumber(password) ? "text-green-500" : "text-neutral-50", !hasNumber(password) && password.length > 0 ? "text-red-500" : "")}>
+        At least one number
+        </li>
+       <li className={cn("mt-1", hasSpecialChar(password) ? "text-green-500" :   "text-neutral-50", !hasSpecialChar(password) && password.length > 0 ?      "text-red-500" : "")}>
+        At least one special character
+        </li>
+        <li className={cn("mt-1", inMinLength(password) ? "text-green-500" : "text-neutral-50", !inMinLength(password) && password.length > 0 ? "text-red-500" : "")}>
+        At least 6 characters
+      </li>
+    </ul>
         </LabelInputContainer>
 
         <button
