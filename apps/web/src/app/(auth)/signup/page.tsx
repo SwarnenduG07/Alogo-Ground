@@ -112,20 +112,20 @@ export default function SignupFormDemo() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-     <ul className="text-sm mt-2 text-neutral-50">
-         <li className={cn("mt-1", hasUpperCase(password) ? "text-green-500" : "text-neutral-50", !hasUpperCase(password) && password.length > 0 ? "text-red-500" : "")}>
-        At least one uppercase letter
-        </li>
-        <li className={cn("mt-1", hasNumber(password) ? "text-green-500" : "text-neutral-50", !hasNumber(password) && password.length > 0 ? "text-red-500" : "")}>
-        At least one number
-        </li>
-       <li className={cn("mt-1", hasSpecialChar(password) ? "text-green-500" :   "text-neutral-50", !hasSpecialChar(password) && password.length > 0 ?      "text-red-500" : "")}>
-        At least one special character
-        </li>
-        <li className={cn("mt-1", inMinLength(password) ? "text-green-500" : "text-neutral-50", !inMinLength(password) && password.length > 0 ? "text-red-500" : "")}>
-        At least 6 characters
-      </li>
-    </ul>
+ <ul className="text-sm mt-2">
+  <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasUpperCase(password) ? "text-green-500" : "text-red-500"}`}>
+    At least one uppercase letter
+  </li>
+  <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasNumber(password) ? "text-green-500" : "text-red-500"}`}>
+    At least one number
+  </li>
+  <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasSpecialChar(password) ? "text-green-500" : "text-red-500"}`}>
+    At least one special character
+  </li>
+  <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : inMinLength(password) ? "text-green-500" : "text-red-500"}`}>
+    At least 6 characters
+  </li>
+</ul>
         </LabelInputContainer>
 
         <button
