@@ -14,14 +14,13 @@ datasource db {
 }
 
 model User {
-  id          String @id @default(uuid())
+  id          String @id @default(cuid())
   email       String
   username    String 
   firstname   String
   lastname    String?
   password    String
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime?  @updatedAt
   contestSubmissions  ContestSubmission[]
 
 

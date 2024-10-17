@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import z from "zod";
 import { dbCLient } from "@/src/app/db";
+import { NextAuthOptions } from "next-auth";
 
 
 const passwordSchema = z.string().min(6).max(50).refine(
@@ -26,7 +27,7 @@ const signInSchema = z.object({
   password: passwordSchema,
 });
 
-export const authOptions = {
+export const authOptions:NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -57,7 +58,9 @@ export const authOptions = {
           if (existingUser) {
             const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
             if (passwordValidation) {
-              return { id: existingUser.id.toString(), email: existingUser.email };
+              return { 
+                id: existingUser.id.toString(), 
+                email: existingUser.email };
             }
             throw new Error("Invalid email or password");
           }
@@ -96,7 +99,9 @@ export const authOptions = {
           },
         });
 
-        return { id: user.id.toString(), email: user.email };
+        return {
+           id: user.id.toString(), 
+          email: user.email };
       },
     }),
   ],
@@ -115,7 +120,7 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }: { token:any, session: any  }) {
-      session.user.id = token.id;
+      session.user.id = token.id as string;
       session.user.email = token.email;
       return session;
     },
