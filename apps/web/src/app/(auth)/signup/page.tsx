@@ -19,6 +19,7 @@ export default function SignupFormDemo() {
     email: "",
   });
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -30,7 +31,25 @@ export default function SignupFormDemo() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Example sign-in logic here
+    try {
+      const result = await signIn("credentials", {
+        redirect: true,
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        username: formData.username,
+        email: formData.email,
+        password: password,
+      });
+
+      if (result?.error) {
+        setErrorMessage(result.error); 
+      } else {
+        console.log("Sign-up successful");
+      }
+    } catch (error) {
+      console.error("Error during sign-up:", error);
+      setErrorMessage("Something went wrong, please try again.");
+    }
   };
 
   return (
@@ -112,20 +131,20 @@ export default function SignupFormDemo() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
- <ul className="text-sm mt-2">
-  <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasUpperCase(password) ? "text-green-500" : "text-red-500"}`}>
-    At least one uppercase letter
-  </li>
-  <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasNumber(password) ? "text-green-500" : "text-red-500"}`}>
-    At least one number
-  </li>
-  <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasSpecialChar(password) ? "text-green-500" : "text-red-500"}`}>
-    At least one special character
-  </li>
-  <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : inMinLength(password) ? "text-green-500" : "text-red-500"}`}>
-    At least 6 characters
-  </li>
-</ul>
+            <ul className="text-sm mt-2">
+              <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasUpperCase(password) ? "text-green-500" : "text-red-500"}`}>
+                At least one uppercase letter
+              </li>
+              <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasNumber(password) ? "text-green-500" : "text-red-500"}`}>
+                At least one number
+              </li>
+              <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : hasSpecialChar(password) ? "text-green-500" : "text-red-500"}`}>
+                At least one special character
+              </li>
+              <li className={`mt-1 ${password.length === 0 ? "text-neutral-50" : inMinLength(password) ? "text-green-500" : "text-red-500"}`}>
+                At least 6 characters
+              </li>
+            </ul>
         </LabelInputContainer>
 
         <button

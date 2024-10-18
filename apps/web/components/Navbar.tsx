@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from './ui/button'
+import { signOut } from 'next-auth/react'
 
 const Navbar = () => {
   return (
@@ -14,7 +15,9 @@ const Navbar = () => {
               <a href="/standings">Standings</a>  
             </div> 
             <div className='mr-2'>
-              <Button>
+              <Button onClick={() => 
+                signOut()
+              }>
                   Logout
               </Button>
             </div>
