@@ -9,8 +9,8 @@ const Navbar = () => {
                algo-play
             </div>
             <div className=' space-x-4 font-semibold cursor-pointer'>
-              <a href="">Contest</a>  
-              <a href="/problem">Problem</a>  
+              <a href="/contest">Contest</a>  
+              <a href="/problems">Problem</a>  
               <a href="/standings">Standings</a>  
             </div> 
             <div className='mr-2'>
