@@ -56,7 +56,7 @@ export default function Signin() {
         </LabelInputContainer>
 
         <button
-          className="bg-gradient-to-br relative group/btn from-black to-neutral-600 block w-full text-white rounded-md h-10 font-medium shadow-md"
+          className="bg-gradient-to-br relative group/btn from-neutral-800 to-amber-600 block w-full text-white rounded-md h-10 font-medium shadow-md"
           type="submit"
         >
           Sign in &rarr;

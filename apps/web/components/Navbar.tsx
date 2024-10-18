@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { Button } from './ui/button'
 import { signOut } from 'next-auth/react'
@@ -17,6 +18,7 @@ const Navbar = () => {
             <div className='mr-2'>
               <Button onClick={() => 
                 signOut()
+                
               }>
                   Logout
               </Button>

@@ -1,8 +1,8 @@
 "use client"
 import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
-import { start } from 'repl';
 import { Button } from './ui/button';
+import { parseFutureDate, parseOldDate } from '@/lib/time';
 
 interface Contestcaedparams {
     title: string,
@@ -38,7 +38,7 @@ export function ContestCard  ({ title, id, endTime, startTime}: Contestcaedparam
                   {startTime.getTime() < Date.now() ? "Started" : "Starts In"}
                 </p>
                 <p>
-                  {/* {startTime.getTime() < Date.now() ? } */}
+                  {startTime.getTime() < Date.now() ? parseOldDate(new Date(startTime)) : parseFutureDate(new Date(startTime))}
                 </p>
               </div>
               <div>

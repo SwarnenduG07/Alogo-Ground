@@ -1,6 +1,14 @@
 import React from 'react'
+import { ContestCard } from './ContestCard'
+import { getExixtingContests, getRunningContests, getUpcomingContests } from '@/src/app/db/contest'
 
-const Contests = () => {
+export default async function  contests ()  {
+
+    const [upcomingContests, pastContests, runningContests] = await Promise.all([
+        getUpcomingContests(),
+        getExixtingContests(),
+        getRunningContests(),
+    ]);
   return (
     <div>
         <div className='pt-5 ml-4'>
@@ -12,8 +20,16 @@ const Contests = () => {
             </h1>
             <div>
                 {/* contestcard */}
+                {runningContests.map((contest) => (
+                    <ContestCard 
+                    key={contest.id}
+                    title={contest.title} 
+                    id={contest.id} 
+                    endTime={contest.endTime} 
+                    startTime={contest.startTime}                    />
+                ))}
+                
             </div>
-
 
             <div className='my-16'>
                 <h1 className='font-bold text-2xl'>
@@ -24,6 +40,16 @@ const Contests = () => {
                 </h1>
                 <div>
                     {/* contestcard */}
+                    {upcomingContests.map((contest) => (
+                        <ContestCard 
+                        key={contest.id}
+                        title={contest.title}
+                        id={contest.id}
+                        startTime={contest.startTime}
+                        endTime={contest.endTime}
+                        />
+                    ))}
+
                 </div>
           </div>
           <div className='my-16'>
@@ -35,11 +61,18 @@ const Contests = () => {
                 </h1>
                 <div>
                     {/* contestcard */}
+                    {pastContests.map((contest) => (
+                        <ContestCard 
+                        key={contest.id}
+                        title={contest.title}
+                        id={contest.id}
+                        startTime={contest.startTime}
+                        endTime={contest.endTime}
+                        />
+                    ))}
                 </div>
           </div>
         </div>
     </div>
   )
 }
-
-export default Contests
