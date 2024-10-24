@@ -1,3 +1,5 @@
+import { div } from 'framer-motion/client'
+import { ArrowBigLeft, ArrowUpAz, ArrowUpSquare } from 'lucide-react'
 import { describe } from 'node:test'
 import { title } from 'process'
 import React from 'react'
@@ -31,14 +33,37 @@ const Feature = [
 
 const Features = () => {
   return (
-    <section className='flex flex-col items-center text-amber-400 mt-5'>
-        <div className='space-x-3 lg:text-5xl  md:text-5xl text-3xl font-bold'>
-            <span className='text-neutral-200'>Surported</span>
-            <span className='text-amber-300'>Fetures</span>
+    <section
+      className=""
+      id="features"
+    >
+      <div className="flex flex-col items-center m-auto text-center gap-4 max-w-[1024px]">
+        <div className="text-5xl font-bold">
+           <span className='text-neutral-200'> Supported </span><span className="text-amber-300">Features</span>
         </div>
-            <div className='lg:max-w-72 md:max-w-72 max-w-60 text-gray-500 text-sm mt-4'>
-                Unlock your ultimate Potential of Data <br /> Structure & Algorythems with Algo Prep 
+        <div className="text-sm text-gray-500 w-full md:w-2/3">
+          Unlock the Full Potential of Competitive Programming with These Key
+          Features
+        </div>
+        <div className="lg:grid md:grid gap-2 grid-cols-1 md:grid-cols-2 p-2 ">
+          {Feature.map((lang: any, index: number) => (
+            <div
+              className={`border-[1px] rounded-md p-2 text-start gap-2 flex flex-col  ${
+                index % 2 === 0 ? "mr-0" : "ml-0"
+              }`}
+              key={index}
+            >
+              <div className="flex gap-2 items-center">
+                <div className='text-rose-400'>
+                    <ArrowUpSquare />
+                </div>
+                <div className="font-semibold text-neutral-400">{lang.title}</div>
+              </div>
+              <div className="text-gray-500">{lang.describe}</div>
             </div>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }

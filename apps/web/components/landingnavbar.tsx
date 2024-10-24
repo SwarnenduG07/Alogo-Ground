@@ -26,7 +26,7 @@ const LandingNavBar = () => {
         </div>
 
         <div className='hidden md:flex space-x-8 mr-5'>
-          <a href='#' className='font-thin md:text-neutral-400 hover:text-gray-300'>Features</a>
+          <a href='#features' className='font-thin text-neutral-300 hover:text-gray-300'>Features</a>
           <a href='#' className='text-white hover:text-gray-300'>Pricing</a>
           <span className="space-x-3">
             <Button 
@@ -47,7 +47,7 @@ const LandingNavBar = () => {
 
         {isMobileMenuOpen && (
           <div className='absolute top-16 right-8 bg-gray-800 w-48 py-2 rounded-lg shadow-lg md:hidden'>
-            <a href='#' className='block px-4 py-2 text-white hover:bg-gray-700'>Features</a>
+            <a href='#features' className='block px-4 py-2 text-white hover:bg-gray-700'>Features</a>
             <a href='#' className='block px-4 py-2 text-white hover:bg-gray-700'>Pricing</a>
             <div className='px-4 py-2 space-y-2'>
               <Button 
