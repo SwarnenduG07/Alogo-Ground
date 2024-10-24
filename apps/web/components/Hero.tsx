@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from './ui/button'
+import Link from 'next/link'
 
 const Hero = () => {
   return (
@@ -12,10 +13,15 @@ const Hero = () => {
                Meet the platform for modern Data Structure practice <br /> 
                qiality questions, contests, and resources.
             </h1>
-            <div className='mt-4'>
-                <Button className='bg-neutral-200 text-black  text-sm font-normal h-9 delay-160  hover:-translate-y-1 hover:scale-110 hover:bg-cyan-400  transition duration-700 ease-in-out rounded-xl'>
+            <div className='mt-4 space-x-10'>
+                <Button className='bg-neutral-200 text-black  text-sm font-normal h-9 delay-160  hover:-translate-y-1 hover:scale-110 hover:bg-cyan-400  transition duration-200 ease-in-out rounded-xl'>
                     Start Building
                 </Button>
+                <Link href={"#features"}
+                className=' border-[1px] p-[8px] rounded-xl  text-sm '
+                >
+                    Explore features
+                </Link>
             </div>
         </div>
     </main>

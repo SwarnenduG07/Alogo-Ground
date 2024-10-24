@@ -30,14 +30,14 @@ const LandingNavBar = () => {
           <a href='#' className='text-white hover:text-gray-300'>Pricing</a>
           <span className="space-x-3">
             <Button 
-              className="h-7 text-sm font-semibold delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 transition duration-500 ease-in-out" 
+              className="h-7 text-sm font-semibold delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 transition duration-200 ease-in-out" 
               variant="outline"
               onClick={() => signIn()}
             >
               Login
             </Button>
             <Button 
-              className="h-7 delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 transition duration-500 ease-in-out" 
+              className="h-7 delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 transition duration-200 ease-in-out" 
               onClick={() => router.push("/signup")}
             >
               Signup
@@ -51,14 +51,14 @@ const LandingNavBar = () => {
             <a href='#' className='block px-4 py-2 text-white hover:bg-gray-700'>Pricing</a>
             <div className='px-4 py-2 space-y-2'>
               <Button 
-                className="w-full h-7 text-sm font-semibold delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 transition duration-500 ease-in-out" 
+                className="w-full h-7 text-sm font-semibold delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 transition duration-200 ease-in-out" 
                 variant="outline"
                 onClick={() => signIn()}
               >
                 Login
               </Button>
               <Button 
-                className="w-full h-7 delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 transition duration-500 ease-in-out" 
+                className="w-full h-7 delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-purple-500 transition duration-200 ease-in-out" 
                 onClick={() => router.push("/signup")}
               >
                 Signup

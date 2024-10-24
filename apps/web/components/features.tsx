@@ -1,5 +1,5 @@
 import { div } from 'framer-motion/client'
-import { ArrowBigLeft, ArrowUpAz, ArrowUpSquare } from 'lucide-react'
+import { ArrowBigLeft, ArrowUpAz, ArrowUpLeftFromSquare, ArrowUpSquare } from 'lucide-react'
 import { describe } from 'node:test'
 import { title } from 'process'
 import React from 'react'
@@ -34,18 +34,18 @@ const Feature = [
 const Features = () => {
   return (
     <section
-      className=""
+      className="mt-4 md:ml-14"
       id="features"
     >
       <div className="flex flex-col items-center m-auto text-center gap-4 max-w-[1024px]">
-        <div className="text-5xl font-bold">
-           <span className='text-neutral-200'> Supported </span><span className="text-amber-300">Features</span>
+        <div className="lg:text-5xl md:text-5xl text-3xl font-bold">
+           <span className='text-neutral-200'> Platform </span><span className="text-amber-300">Features</span>
         </div>
         <div className="text-sm text-gray-500 w-full md:w-2/3">
           Unlock the Full Potential of Competitive Programming with These Key
           Features
         </div>
-        <div className="lg:grid md:grid gap-2 grid-cols-1 md:grid-cols-2 p-2 ">
+        <div className="lg:grid md:grid grid gap-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-2 p-2 ">
           {Feature.map((lang: any, index: number) => (
             <div
               className={`border-[1px] rounded-md p-2 text-start gap-2 flex flex-col  ${
@@ -54,8 +54,8 @@ const Features = () => {
               key={index}
             >
               <div className="flex gap-2 items-center">
-                <div className='text-rose-400'>
-                    <ArrowUpSquare />
+                <div className='text-rose-400 font-semibold'>
+                    <ArrowUpLeftFromSquare />
                 </div>
                 <div className="font-semibold text-neutral-400">{lang.title}</div>
               </div>

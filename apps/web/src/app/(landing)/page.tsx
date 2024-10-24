@@ -1,6 +1,7 @@
 "use client"
 import Features from "@/components/features";
 import Hero from "@/components/hero";
+import HowItWorks from "@/components/howItWork";
 import LandingNavBar from "@/components/landingnavbar";
 import Langaugesupport from "@/components/langaugesupport";
 
@@ -11,6 +12,7 @@ export default function Home() {
        <Hero />
        <Langaugesupport />
        <Features />
+       <HowItWorks /> 
     </div>
   );
 }
