@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import z from "zod";
 import { dbCLient } from "@/src/app/db";
 import { NextAuthOptions } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
 
 
 const passwordSchema = z.string().min(6).max(50).refine(
@@ -104,6 +105,10 @@ export const authOptions:NextAuthOptions = {
           email: user.email };
       },
     }),
+     GithubProvider({
+       clientId: process.env.GITHUB_ID || "",
+       clientSecret: process.env.GITHUB_SECRET || "",
+    })
   ],
   session: {
     strategy: "jwt",

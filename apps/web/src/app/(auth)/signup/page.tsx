@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import { IconBrandGit, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 
 const hasUpperCase = (password: string) => /[A-Z]/.test(password);
 const hasNumber =  (password: string) =>  /[0-9]/.test(password);
@@ -148,7 +148,7 @@ export default function SignupFormDemo() {
         </LabelInputContainer>
 
         <button
-          className="bg-gradient-to-br from-black to-neutral-600 block w-full text-white rounded-md h-10 font-medium"
+          className="bg-gradient-to-br from-neutral-800 to-neutral-600 block w-full text-white h-10 font-medium border rounded-xl relative group/btnga"
           type="submit"
         >
           Sign up &rarr;
@@ -158,21 +158,23 @@ export default function SignupFormDemo() {
         <div className="bg-gradient-to-r from-transparent via-neutral-300 to-transparent my-8 h-[1px] w-full" />
 
         <div className="flex flex-col space-y-4">
-          <button
-            className="flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium bg-gray-50"
+        <button
+            className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50"
             type="button"
+            onClick={() => signIn("github")}
           >
             <IconBrandGithub className="h-4 w-4 text-neutral-800" />
-            <span className="text-neutral-700">Sign up with GitHub</span>
+            <span className="text-neutral-700 text-sm">Signup with Github</span>
             <BottomGradient />
           </button>
 
           <button
-            className="flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium bg-gray-50"
+            className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50"
             type="button"
+            onClick={() => signIn("google")}
           >
             <IconBrandGoogle className="h-4 w-4 text-neutral-800" />
-            <span className="text-neutral-700">Sign up with Google</span>
+            <span className="text-neutral-700 text-sm">Signup with  Google</span>
             <BottomGradient />
           </button>
         </div>
