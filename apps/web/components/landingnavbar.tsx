@@ -3,8 +3,7 @@ import { signIn } from "next-auth/react"
 import { Button } from "./ui/button"
 import React, { useState } from 'react'
 import { useRouter } from "next/navigation"
-import { Menu } from "lucide-react" // You can install lucide-react for icons, or use any other icon library
-
+import { Menu } from "lucide-react"
 const LandingNavBar = () => {
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -13,22 +12,19 @@ const LandingNavBar = () => {
     <div className='bg-transparent backdrop-blur-md lg:mx-32 md:mx-32 mx-12 py-1.5 mt-5 rounded-xl border border-s-transparent border-slate-700'>
       <nav className='flex justify-between items-center'>
 
-        {/* Logo */}
         <div className='font-mono lg:ml-8 md:ml-8 ml-3 font-normal text-neutral-100'>
           _AlgoPlay
         </div>
         
-        {/* Mobile Hamburger Menu */}
         <div className='md:hidden mr-8'>
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
             className='text-white hover:text-gray-300 focus:outline-none'
           >
-            <Menu size={24} /> {/* Hamburger icon */}
+            <Menu size={24} /> 
           </button>
         </div>
 
-        {/* Desktop Menu */}
         <div className='hidden md:flex space-x-8 mr-5'>
           <a href='#' className='font-thin md:text-neutral-400 hover:text-gray-300'>Features</a>
           <a href='#' className='text-white hover:text-gray-300'>Pricing</a>
@@ -49,7 +45,6 @@ const LandingNavBar = () => {
           </span>
         </div>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className='absolute top-16 right-8 bg-gray-800 w-48 py-2 rounded-lg shadow-lg md:hidden'>
             <a href='#' className='block px-4 py-2 text-white hover:bg-gray-700'>Features</a>
