@@ -1,13 +1,14 @@
 
-import Contests from '@/components/Contest'
-import Navbar from '@/components/Navbar'
+
+import Contest from '@/components/contest'
+import Navbar from '@/components/navbar'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
        <Navbar />
-       < Contests/>
+       <Contest/>
     </div>
   )
 }

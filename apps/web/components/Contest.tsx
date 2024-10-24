@@ -1,6 +1,6 @@
 import React from 'react'
-import { ContestCard } from './ContestCard'
 import { getExixtingContests, getRunningContests, getUpcomingContests } from '@/src/app/db/contest'
+import { ContestCard } from './contestCard';
 
 export default async function  contests ()  {
 
@@ -20,7 +20,7 @@ export default async function  contests ()  {
             </h1>
             <div>
                 {/* contestcard */}
-                {runningContests.map((contest) => (
+                {runningContests.map((contest: any) => (
                     <ContestCard 
                     key={contest.id}
                     title={contest.title} 
@@ -40,7 +40,7 @@ export default async function  contests ()  {
                 </h1>
                 <div>
                     {/* contestcard */}
-                    {upcomingContests.map((contest) => (
+                    {upcomingContests.map((contest: any) => (
                         <ContestCard 
                         key={contest.id}
                         title={contest.title}
@@ -61,7 +61,7 @@ export default async function  contests ()  {
                 </h1>
                 <div>
                     {/* contestcard */}
-                    {pastContests.map((contest) => (
+                    {pastContests.map((contest: any) => (
                         <ContestCard 
                         key={contest.id}
                         title={contest.title}
