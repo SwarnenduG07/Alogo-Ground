@@ -4,8 +4,8 @@ import { Button } from './ui/button'
 const Hero = () => {
   return (
     <main className=''>
-        <div className='flex justify-items-start mt-24 ml-36 flex-col text-neutral-200'>
-            <h1 className='font-medium  font-serif text-5xl'>
+        <div className='flex justify-items-start lg:mt-24 md:mt-24 mt-20 lg:ml-36 md:ml-32 ml-12 flex-col text-neutral-200'>
+            <h1 className='font-medium font-serif lg:text-5xl md:text-5xl text-4xl'>
                 Algoprep is a purpose to <br /> be good in algo & Dsa
             </h1>
             <h1 className='pt-5 font-medium'>
