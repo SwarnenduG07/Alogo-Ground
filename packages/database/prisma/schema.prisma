@@ -18,13 +18,12 @@ model User {
   email       String
   username    String @unique
   firstname   String
-  lastname    String?
+  lastname    String
   password    String
   createdAt   DateTime  @default(now())
   contestSubmissions  ContestSubmission[]
-
-
-  Submission Submission[]
+  Submission      Submission[]
+  contestPoints   ContestPoints[]
 }
 
 model Contest {
@@ -65,9 +64,25 @@ model Problem {
   solved      Int          @default(0)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime    @updatedAt
-  ContestProblem     ContestProblem[]
-  Submission         Submission[]
-  ContestSubmission  ContestSubmission[]
+  Contest             ContestProblem[]
+  Submissions         Submission[]
+  ContestSubmissions  ContestSubmission[]
+  defaultCode         DefaultCode[]
+  difficulty          Difficulty @default(MEDIUM)
+}
+
+model DefaultCode {
+  id            String    @id @default(cuid())
+  languageId    Int
+  problemId     String
+  code          String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  problem       Problem @relation(fields: [problemId], references: [id])
+  langauge      Language @relation(fields: [languageId], references: [id])
+
+  @@unique([problemId, languageId])
+
 }
 
 model Submission {
@@ -88,11 +103,12 @@ model Submission {
 
 
 model Language {
-  id        Int       @id @default(autoincrement())
-  name      String
-  judfe0id  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            Int       @id @default(autoincrement())
+  name          String
+  judfe0id      Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  defaultcode   DefaultCode[]
 
 }
 
@@ -110,9 +126,30 @@ model ContestSubmission {
 
 }
 
+model ContestPoints {
+  id          String @id @default(cuid())
+  contestId   String
+  userId      String
+  points      Int
+  rank        Int
+  user        User @relation(fields: [userId], references: [id])
+  @@unique([contestId, userId])
+}
+
 enum SubmissionResult {
   AC
   REJECTED
   PENDING
 }
+enum userRole {
+  ADMIN
+  USER
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
 
