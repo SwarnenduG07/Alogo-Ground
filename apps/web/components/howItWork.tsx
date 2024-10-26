@@ -1,8 +1,4 @@
 import { IconUserQuestion } from '@tabler/icons-react'
-import { div } from 'framer-motion/client'
-import { ArrowBigLeft, ArrowUpAz, ArrowUpLeftFromSquare, ArrowUpSquare, FileQuestion } from 'lucide-react'
-import { describe } from 'node:test'
-import { title } from 'process'
 import React from 'react'
 
 const Feature = [
@@ -31,7 +27,7 @@ const Feature = [
 const HowItWorks = () => {
   return (
     <section
-      className="mt-4 md:ml-14"
+      className="mt-8 md:ml-14"
       id="features"
     >
       <div className="flex flex-col items-center m-auto text-center gap-4 max-w-[1024px]">
@@ -44,7 +40,7 @@ const HowItWorks = () => {
           Unlock the Full Potential of Competitive Programming with These Key
           Features
         </div>
-        <div className="lg:grid md:grid grid gap-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-2 p-2 ">
+        <div className="lg:grid md:grid grid gap-2 grid-cols-1 md:grid-cols-2 p-2 cursor-pointer ">
           {Feature.map((lang: any, index: number) => (
             <div
               className={`border-[1px] rounded-md p-2 text-start gap-2 flex flex-col  ${

@@ -4,6 +4,7 @@ import z from "zod";
 import { dbCLient } from "@/src/app/db";
 import { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import { JWT } from "next-auth/jwt";
 
 
 const passwordSchema = z.string().min(6).max(50).refine(
@@ -117,16 +118,18 @@ export const authOptions:NextAuthOptions = {
     secret: process.env.JWT_SECRET || "your_secret_key",
   },
   callbacks: {
-    async jwt({ token, user }: {token: any, user: any}) {
+    async jwt({ token, user }: { token: JWT; user: any }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
       }
       return token;
     },
-    async session({ session, token }: { token:any, session: any  }) {
-      session.user.id = token.id as string;
-      session.user.email = token.email;
+    async session({ session, token }: { session: any; token: JWT }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.email = token.email as string;
+      }
       return session;
     },
     async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {

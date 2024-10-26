@@ -1,9 +1,10 @@
 import { getServerSession } from "next-auth"
 import { dbCLient } from ".";
 import { authOptions } from "@/lib/auth.action";
+import { Session } from "next-auth";
 
 export const getContest = async (contestId: string) => {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions) as Session | null;
     const contest = await dbCLient.contest.findFirst({
         where: {
             id: contestId,
@@ -17,7 +18,7 @@ export const getContest = async (contestId: string) => {
             },
             contestSubmissions: {
                  where: {
-                    userId: session?.user?.id
+                    userId: (session?.user as { id: string })?.id
                  },
             },
         },

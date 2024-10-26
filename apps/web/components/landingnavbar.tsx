@@ -12,7 +12,7 @@ const LandingNavBar = () => {
     <div className='bg-transparent backdrop-blur-md lg:mx-32 md:mx-32 mx-12 py-1.5 mt-5 rounded-xl border border-s-transparent border-slate-700'>
       <nav className='flex justify-between items-center'>
 
-        <div className='font-mono lg:ml-8 md:ml-8 ml-3 font-normal text-neutral-100'>
+        <div className='font-mono lg:ml-8 md:ml-8 ml-3 font-normal text-neutral-100 cursor-pointer'>
           _AlgoPlay
         </div>
         
