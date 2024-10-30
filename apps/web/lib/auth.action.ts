@@ -2,9 +2,24 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import z from "zod";
 import { dbCLient } from "@/src/app/db";
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, User } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import { JWT } from "next-auth/jwt";
+import { Session } from "next-auth";
+
+declare module "next-auth" {
+
+interface Session {
+  user: {
+     role: string;
+      
+  } & User
+}
+interface User {
+  role: string;
+ }
+}
+
 
 
 const passwordSchema = z.string().min(6).max(50).refine(
@@ -62,7 +77,9 @@ export const authOptions:NextAuthOptions = {
             if (passwordValidation) {
               return { 
                 id: existingUser.id.toString(), 
-                email: existingUser.email };
+                email: existingUser.email ,
+                role: existingUser.role,
+              };
             }
             throw new Error("Invalid email or password");
           }
@@ -103,7 +120,9 @@ export const authOptions:NextAuthOptions = {
 
         return {
            id: user.id.toString(), 
-          email: user.email };
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
      GithubProvider({
@@ -122,6 +141,8 @@ export const authOptions:NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.role = user.role;
+
       }
       return token;
     },
@@ -129,6 +150,7 @@ export const authOptions:NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
+        session.user.emailz = token.role as string;
       }
       return session;
     },

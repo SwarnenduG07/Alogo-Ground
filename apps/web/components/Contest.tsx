@@ -2,7 +2,7 @@ import React from 'react'
 import { getExixtingContests, getRunningContests, getUpcomingContests } from '@/src/app/db/contest'
 import { ContestCard } from './contestCard';
 
-export default async function  contests ()  {
+export default async function contests()  {
 
     const [upcomingContests, pastContests, runningContests] = await Promise.all([
         getUpcomingContests(),
