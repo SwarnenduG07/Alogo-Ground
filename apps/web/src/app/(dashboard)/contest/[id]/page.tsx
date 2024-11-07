@@ -9,4 +9,4 @@ export default function ContestPage({params}: {params: {id: string}}) {
     
 }
 
-export const dynamic = "force-dynamic"
+// export const dynamic = "force-dynamic"
