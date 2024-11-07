@@ -3,6 +3,7 @@ import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { parseFutureDate, parseOldDate } from '@/lib/time';
+import Link from 'next/link';
 
 interface Contestcaedparams {
     title: string,
@@ -49,9 +50,13 @@ export function ContestCard  ({ title, id, endTime, startTime}: Contestcaedparam
               </div>
           </div>
           <CardFooter>
-            <Button>
-                {isActive ? "Participate" : "View Contest"}
-            </Button>
+            <Link href={`/contest/${id}`}
+            prefetch={false}
+            >
+              <Button >
+                  {isActive ? "Participate" : "View Contest"}
+              </Button> 
+            </Link>
           </CardFooter>
         </CardContent>
     </Card>
