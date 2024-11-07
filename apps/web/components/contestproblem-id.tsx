@@ -14,23 +14,23 @@ interface ProblemRowProps {
 export const ContestProblemTable = ({contest}: {
     contest: {
         title: string;
-        difficulty: string;
+        description: string;
         id: string;
         problems: {
-            problem :{
-                id: string;
-                title : string;
-                difficulty: string;
-                solved: number;
-            };
+          problem: {
+            id: string;
+            title: string;
+            difficulty: string;
+            solved: number;
+          };
         }[];
         contestSubmissions: {
-            userId : string;
-            problemId :string;
-            contestId: string;
-            proints: number;
+          userId: string;
+          problemId: string;
+          contestId: string;
+          points: number;
         }[];
-    };
+      };
 }) => {
    return (
     <div className="flex flex-col"> 
@@ -58,7 +58,7 @@ export const ContestProblemTable = ({contest}: {
                              <ProblemRow 
                                 points={contest.contestSubmissions.find(
                                     (submission) => submission.problemId === problem.id
-                                )?.proints || 0}
+                                )?.points || 0}
                                 contestId={problem.id} 
                                 id={problem.id}
                                  title={problem.title} 
