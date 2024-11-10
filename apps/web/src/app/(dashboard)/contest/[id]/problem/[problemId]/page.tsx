@@ -22,5 +22,5 @@ export default async function ProblemPage({params: {id, problemId},}: {
                 </div>
             </main>
         </div>
-    )
+   )
 }
