@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import axios from "axios";
-import { ISubmission } from "./submissionTable";
+import { ISubmission, SubmissionTable } from "./submissionTable";
 interface Iproblem {
     id: string;
     title :string;
@@ -59,7 +59,7 @@ function Submissions({ problem }: { problem: Iproblem }) {
 
   return (
     <div>
-      {/* <SubmissionTable submissions={submissions} /> */}
+      <SubmissionTable submissions={submissions} />
     </div>
   );
 }
