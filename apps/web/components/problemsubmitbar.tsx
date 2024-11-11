@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
-import { set } from "zod";
-
+import axios from "axios";
+import { ISubmission } from "./submissionTable";
 interface Iproblem {
     id: string;
     title :string;
@@ -43,4 +43,23 @@ export const ProblemSubmitBar = ({problem, contestId}: {
           </div>
         </div>
     )
+}
+function Submissions({ problem }: { problem: Iproblem }) {
+  const [submissions, setSubmissions] = useState<ISubmission[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        `/api/submission/bulk?problemId=${problem.id}`
+      );
+      setSubmissions(response.data.submissions || []);
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      {/* <SubmissionTable submissions={submissions} /> */}
+    </div>
+  );
 }

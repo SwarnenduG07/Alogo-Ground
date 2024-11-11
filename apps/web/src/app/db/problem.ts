@@ -1,4 +1,3 @@
-import { Problem } from "@repo/db";
 import { dbCLient } from "."
 
 export const getProblem = async (problemId: string, contestId:string) => {
