@@ -1,4 +1,5 @@
 import { dbCLient } from "."
+import { Problem } from "@repo/db/client";
 
 export const getProblem = async (problemId: string, contestId:string) => {
      if(contestId) {

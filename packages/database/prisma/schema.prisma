@@ -154,4 +154,20 @@ enum Difficulty {
   HARD
 }
 
+model ar_internal_metadata {
+  key        String   @id @db.VarChar
+  value      String?  @db.VarChar
+  created_at DateTime @db.Timestamp(6)
+  updated_at DateTime @db.Timestamp(6)
+}
+
+model Languages {
+  id          Int      @id @default(autoincrement())
+  name        String?  @db.VarChar()
+  compile_cmd String?  @db.VarChar()
+  rum_cmd     String?  @db.VarChar()
+  source_file String?  @db.VarChar()
+  is_archived Boolean? @default(false)
+}
+
 

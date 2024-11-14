@@ -2,7 +2,7 @@
   "name": "@repo/db",
   "version": "1.0.0",
   "exports": {
-    ".": "./src/index.ts"
+    "./client": "./src/index.ts"
   },
   "description": "The main db of the project",
   "main": "index.js",
