@@ -1,8 +1,5 @@
 import ProblemStatement from "@/components/problemstatement";
 import { getProblem } from "@/src/app/db/problem";
-import { div, i } from "framer-motion/client";
-import { get } from "http";
-import { ReceiptRussianRuble } from "lucide-react";
 
 export default async function ProblemPage({params: {id, problemId},}: {
     params: {id: string;

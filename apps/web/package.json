@@ -16,6 +16,7 @@
     "@radix-ui/react-tabs": "^1.1.1",
     "@repo/db": "workspace:*",
     "@repo/ui": "workspace:*",
+    "@repo/common":"workspace:*",
     "@tabler/icons-react": "^3.19.0",
     "@types/bcrypt": "^5.0.2",
     "axios": "^1.7.7",

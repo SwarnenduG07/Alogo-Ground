@@ -63,3 +63,13 @@ function Submissions({ problem }: { problem: Iproblem }) {
     </div>
   );
 }
+
+function SubmitPorlem ({
+  problem,
+  contestId,
+}: {
+  problem: Iproblem;
+  contestId?:string;
+}) {
+  
+}
