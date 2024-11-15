@@ -1,4 +1,4 @@
-export class ProblemDefinaionParser {
+export class FullProblemDefinaionParser {
     problemName: string = "";
     functionName: string = "";
     inputFields: {type: string, name: string}[]= [];
