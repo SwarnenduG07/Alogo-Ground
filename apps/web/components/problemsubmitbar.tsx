@@ -38,8 +38,10 @@ export const ProblemSubmitBar = ({problem, contestId}: {
                </div>
             </div>
             <div className={`${activeTab === "problem" ? "" : "hidden"}`}>
-               {/* TODO ADD  Submitproblem */}
+               <SubmitProblem problem={problem}
+               contestId={contestId}/>
             </div>
+            {activeTab === "submission" && <Submissions problem={problem}/>}
           </div>
         </div>
     )
@@ -64,7 +66,7 @@ function Submissions({ problem }: { problem: Iproblem }) {
   );
 }
 
-function SubmitPorlem ({
+function SubmitProblem ({
   problem,
   contestId,
 }: {

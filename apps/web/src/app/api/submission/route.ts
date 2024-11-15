@@ -77,7 +77,7 @@ export async function POST(req:NextRequest) {
             message: "Problem not Found",
         },
         {
-            status :404
+            status: 404
         }
      ); 
    }
