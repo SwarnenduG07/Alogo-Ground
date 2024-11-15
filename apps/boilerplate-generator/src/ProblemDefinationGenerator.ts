@@ -84,8 +84,66 @@ export class ProblemDefinaionParser {
     }`;
  }
      generatejava() : string {
+        let inputReadindex = 0;
+        const inputReadess = this.inputFields.map((fields) => {
+            if(fields.type.startsWith("list<")) {
+                let javaType = this.mapTypeToJava(fields.type);
+                let inputeType = javaType.match(/<(.*?)>/);
+                javaType = inputeType ? inputeType[1] : 'Integer';
+                let parseToType = (javaType === 'Integer') ? 'Int' : javaType;
 
-     }
+                return `int size_${fields.name} = Integer.parseInt(lines.get(${inputReadindex++}).trim());\n
+                ${this.mapTypeToJava(fields.type)} ${fields.name} = new ArrayList<>(size_${fields.name});\n
+                String[] inputStream = lines.get(${inputReadindex++}).trim().split("\\s+");\n
+                for (String inputChar : inputStream)  {\n
+                  ${fields.name}.add(${javaType}.parse${parseToType}(inputChar));\n
+                }\n`;
+            } else {
+                let javaType = this.mapTypeToJava(fields.type);
+                if(javaType === "int") {
+                    javaType = 'Integer';
+                } else if (javaType === 'float') {
+                    javaType = "Float";
+                } else if (javaType === 'boolean') {
+                    javaType = "Boolean";
+                } else if (javaType === 'string') {
+                    javaType = "String";
+                }
+                let parseToType = (javaType === "Integer") ? "Int" : javaType;return `${this.mapTypeToJava(fields.type)} ${fields.name} = ${javaType}.parse${parseToType}(lines.get(${inputReadindex++}). trim());`;
+            }
+        }).join("\n ");
+        const outputType = this.mapTypeToJava(this.outputFields[0].type);
+        const functionCall = `${outputType} result = ${this.functionName}(${this.inputFields.map((fields) => fields.name).join(", ")});`;
+        const outputWrite = `System.out.println(result);`;
+    return `
+    import java.io.*;
+    import java.util.*;
+
+    public class Main {
+        
+        ##USER_CODE_HERE##
+
+    public static void main(String[] args) {
+        String filePath = "/dev/problems/${this.problemName.toLowerCase().replace(" ", "-")}/tests/inputs/##INPUT_FILE_INDEX##.txt"; 
+        List<String> lines = readLinesFromFile(filePath);
+        ${inputReadess}
+        ${functionCall}
+        ${outputWrite}
+    }
+    public static List<String> readLinesFromFile(String filePath) {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
+    }
+   }`
+ }
 
      generateRust(): string {
 
@@ -117,4 +175,49 @@ export class ProblemDefinaionParser {
                 return "unknown"
         }
       }
+      mapTypeToJava(type:string):string {
+        switch (type) {
+          case "int":
+            return "int";
+          case "float":
+            return "float";
+          case "string":
+            return "String";
+          case "bool":
+            return "boolean";
+          case "list<int>":
+            return "List<Integer>";
+          case "list<float>":
+            return "List<Float>";
+          case "list<string>":
+            return "List<String>";
+          case "list<bool>":
+            return "List<Boolean>";
+          default:
+            return "unknown";
+        }
+      }
+      mapTypeToRust(type: string): string {
+        switch (type) {
+          case "int":
+            return "i32";
+          case "float":
+            return "f64";
+          case "string":
+            return "String";
+          case "bool":
+            return "bool";
+          case "list<int>":
+            return "Vec<i32>";
+          case "list<float>":
+            return "Vec<f64>";
+          case "list<string>":
+            return "Vec<String>";
+          case "list<bool>":
+            return "Vec<bool>";
+          default:
+            return "unknown";
+        }
+      }
+
 }  
