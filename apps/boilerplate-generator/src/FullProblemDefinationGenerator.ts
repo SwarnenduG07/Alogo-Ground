@@ -83,7 +83,7 @@ export class FullProblemDefinaionParser {
   return 0;
     }`;
  }
-     generatejava() : string {
+     generateJava() : string {
         let inputReadindex = 0;
         const inputReadess = this.inputFields.map((fields) => {
             if(fields.type.startsWith("list<")) {
