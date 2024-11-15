@@ -145,12 +145,83 @@ export class ProblemDefinaionParser {
    }`
  }
 
-     generateRust(): string {
+ generateRust(): string {
+    const inputs = this.inputFields
+      .map((field) => `${field.name}: ${this.mapTypeToRust(field.type)}`)
+      .join(", ");
+    const inputReads = this.inputFields
+      .map((field) => {
+        if (field.type.startsWith("list<")) {
+          return `let size_${field.name}: usize = lines.next().and_then(|line| line.parse().ok()).unwrap_or(0);\n\tlet ${field.name}: ${this.mapTypeToRust(field.type)} = parse_input(lines, size_${field.name});`;
+        } else {
+          return `let ${field.name}: ${this.mapTypeToRust(field.type)} = lines.next().unwrap().parse().unwrap();`;
+        }
+      })
+      .join("\n  ");
+    const containsVector = this.inputFields.find((field) =>
+      field.type.startsWith("list<")
+    );
+    const outputType = this.mapTypeToRust(this.outputFields[0].type);
+    const functionCall = `let result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")});`;
+    const outputWrite = `println!("{}", result);`;
 
-     }
-     generateJs() :string {
+    return `use std::fs::read_to_string;
+use std::io::{self};
+use std::str::Lines;
 
-     }
+##USER_CODE_HERE##
+
+fn main() -> io::Result<()> {
+  let input = read_to_string("/dev/problems/${this.problemName.toLowerCase().replace(" ", "-")}/tests/inputs/##INPUT_FILE_INDEX##.txt")?;
+  let mut lines = input.lines();
+  ${inputReads}
+  ${functionCall}
+  ${outputWrite}
+  Ok(())
+}${
+  containsVector
+    ? `\nfn parse_input(mut input: Lines, size_arr: usize) -> Vec<i32> {
+    let arr: Vec<i32> = input
+        .next()
+        .unwrap_or_default()
+        .split_whitespace()
+        .filter_map(|x| x.parse().ok())
+        .collect();
+
+    if size_arr == 0 {
+        Vec::new()
+    } else {
+        arr
+    }
+}`
+    : ""
+}
+`;
+  }
+
+  generateJs(): string {
+    const inputs = this.inputFields.map((field) => field.name).join(", ");
+    const inputReads = this.inputFields
+      .map((field) => {
+        if (field.type.startsWith("list<")) {
+          return `const size_${field.name} = parseInt(input.shift());\nconst ${field.name} = input.splice(0, size_${field.name}).map(Number);`;
+        } else {
+          return `const ${field.name} = parseInt(input.shift());`;
+        }
+      })
+      .join("\n  ");
+    const outputType = this.outputFields[0].type;
+    const functionCall = `const result = ${this.functionName}(${this.inputFields.map((field) => field.name).join(", ")});`;
+    const outputWrite = `console.log(result);`;
+
+    return `##USER_CODE_HERE##
+
+const input = require('fs').readFileSync('/dev/problems/${this.problemName.toLowerCase().replace(" ", "-")}/tests/inputs/##INPUT_FILE_INDEX##.txt', 'utf8').trim().split('\\n').join(' ').split(' ');
+${inputReads}
+${functionCall}
+${outputWrite}
+    `;
+  }
 
 
      mapTypeToCpp(type: string): string {
