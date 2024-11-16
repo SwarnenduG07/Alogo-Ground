@@ -54,7 +54,7 @@ function generateFullBoilerPLate(generatorFilePath: string) {
   const parser = new FullProblemDefinaionParser();
   parser.parse(input);
 
-  // Generate the boilerplate code
+  // Generate the Full boilerplate code
   const cppCode = parser.generateCpp();
   const jsCode = parser.generateJs();
   const rustCode = parser.generateRust();
@@ -65,13 +65,13 @@ function generateFullBoilerPLate(generatorFilePath: string) {
     fs.mkdirSync(boilerplatePath, { recursive: true });
   }
 
-  // Write the boilerplate code to respective files
+  // Write the Fullboilerplate code to respective files
   fs.writeFileSync(path.join(boilerplatePath, "function.cpp"), cppCode);
   fs.writeFileSync(path.join(boilerplatePath, "function.js"), jsCode);
   fs.writeFileSync(path.join(boilerplatePath, "function.rs"), rustCode);
   fs.writeFileSync(path.join(boilerplatePath, "function.java"), javaCode);
 
-  console.log("Boilerplate code generated successfully!");
+  console.log("Boilerplate Fullcode generated successfully!");
 }
 
 const getFolders = (dir: string) => {
