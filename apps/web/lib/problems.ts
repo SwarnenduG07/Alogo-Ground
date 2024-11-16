@@ -1,4 +1,3 @@
-import { data } from "framer-motion/client";
 import fs from "fs";
 type SUPPORTED_LANGS = "js" | "cpp" | "rs" | "java";
 interface Problem {

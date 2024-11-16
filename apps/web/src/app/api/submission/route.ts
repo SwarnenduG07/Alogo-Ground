@@ -2,14 +2,16 @@ import { authOptions } from "@/lib/auth.action";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { SubbmissionInput } from "@repo/common/zod";
+import { LANGUAGE_MAPPING } from "@repo/common/language";
 import { fromTheme } from "tailwind-merge";
 import { dbCLient } from "../../db";
 
 import { sub } from "framer-motion/client";
 import { getProblem } from "@/lib/problems";
+import axios from "axios";
 
 const SECRET_KEY = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY!;
-
+const JUDGE0_URI = process.env.JUDGE0_URI || "https://judge.100xdevs.com";
 const CLOUDFLARE_TURNSTILE_URL =
   "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
@@ -86,4 +88,46 @@ export async function POST(req:NextRequest) {
     dbProblem.slug,
     subbmissionInput.data.languageeId,
    );
+
+   problem.fullBoilerplateCode = problem.fullBoilerplateCode.replace(
+    "##USER_CODE_HERE##",
+    subbmissionInput.data.code
+   );
+   const response = await axios.post(
+    `${JUDGE0_URI}/submission/batch?base64_encoded=false`,
+    {
+      submission: problem.inputs.map((index: any) => ({
+        language_id: LANGUAGE_MAPPING[subbmissionInput.data.languageeId]?.judge0,
+        source_code: problem.fullBoilerplateCode.replace(
+          "##INPUT_FILE_INDEX##",
+          index.toString()
+        ),
+        expected_output: problem.outputs[index],
+      })),
+    }
+   );
+
+   const submission = await dbCLient.submission.create({
+    data: {
+      userId: session.user.id,
+      problemId :subbmissionInput.data.problemId,
+      code : subbmissionInput.data.code,
+      activeContestId: subbmissionInput.data.activeContestId,
+      testcases: {
+        connect: response.data,
+      },
+    },
+    include: {
+      testcases: true,
+     },
+   });
+   return NextResponse.json(
+    {
+      message: "Submission made",
+      id: submission.id,
+    },
+    {
+      status: 200,
+    }
+   )
 }
