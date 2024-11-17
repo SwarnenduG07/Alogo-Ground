@@ -1,9 +1,11 @@
-import React from 'react'
+import { Problems } from "@/components/problem";
 
-const page = () => {
+export default function Page({
+  searchParams,
+} :{searchParams: {query: string | null}; }): JSX.Element {
   return (
-    <div>  Coding Problems page</div>
+    <main>
+       <Problems query={searchParams.query}/>
+    </main>
   )
 }
-
-export default page
