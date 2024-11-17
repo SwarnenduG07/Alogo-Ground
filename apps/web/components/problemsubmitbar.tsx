@@ -3,13 +3,20 @@ import { use, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import axios from "axios";
 import { ISubmission, SubmissionTable } from "./submissionTable";
-import { object } from "zod";
+import { Turnstile } from "@marsidev/react-turnstile" 
 import { LANGUAGE_MAPPING } from "@repo/common/language";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { toast } from "react-toastify";
-import { i } from "framer-motion/client";
+import { submissions as SubmissionsType } from "@repo/db/client";
 import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Button } from "./ui/button";
+import { CircleX, ClockIcon } from "lucide-react";
+import { div } from "framer-motion/client";
+
+const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ||
+  "0x4AAAAAAAc4qhUEsytXspC_";
 interface Iproblem {
     id: string;
     title :string;
@@ -94,7 +101,7 @@ function SubmitProblem ({
      const [code, setCode] = useState<Record<string, string>>({})
      const [status, setStatus] = useState<string>(SubmitStatus.SUBMIT);
      const [testcases, setTestcases] = useState<any[]>([]);
-     const [token, serToken] = useState<string>("");
+     const [token, setToken] = useState<string>("");
      const session = useSession();
 
      useEffect(() => {
@@ -192,7 +199,70 @@ function SubmitProblem ({
                defaultLanguage="javascript"
                />
            </div>
-           
+           <div className="flex justify-end">
+                {process.env.NODE_ENV === "production" ? (
+                  <Turnstile 
+                  onSuccess={(token: string) => {
+                    setToken(token);
+                  }} 
+                  siteKey={TURNSTILE_SITE_KEY}
+                  />
+                ): null}
+                <Button 
+                disabled={status === SubmitStatus.PENDING}
+                type="submit"
+                className="mt-4 align-right"
+                onClick={session.data?.user ? submit : () => signIn()}
+                >
+                  {session.data?.user ? status === SubmitStatus.PENDING ? "submitting" : "submit" : "Login to submit"}
+                </Button>
+           </div>
+                <RenderTestCase testcases={testcases}/>
+      </div>
+    )
+}
+
+function renderResult(status :number | null) {
+  switch (status) {
+    case 1: 
+       return <ClockIcon className="h-6 w-6 text-yellow-400"/>;
+    case 2: 
+       return <ClockIcon className="h-6 w-6 text-yellow-400"/>;
+    case 3: 
+       return <ClockIcon className="h-6 w-6 text-green-500"/>;
+    case 4: 
+       return <CircleX className="h-6 w-6 text-yellow-400"/>;
+    case 5: 
+       return <ClockIcon className="h-6 w-6 text-yellow-400"/>;
+    case 6: 
+       return <CircleX className="h-6 w-6 text-yellow-400"/>;
+    case 13: 
+       return <div className=" text-gray-500">Inter Error!</div>;
+    case 14: 
+         return <div className=" text-gray-500">Exac Fromat Error!</div>;
+     default: 
+         return <div className=" text-gray-500">Runtime Error!</div>;
+    
+  }
+}
+
+function RenderTestCase({testcases} :{
+  testcases :SubmissionsType[]
+}) {
+    return (
+      <div className="grid gird-cols-6 gap-4">
+       {testcases.map((testcases, index) => (
+        <div key={index} className="broder rounded-md">
+           <div className="px-2 pt-2 flex justify-center">
+              <div className="">
+                Test #{index + 1}
+              </div>
+           </div>
+           <div className="p-2 flex justify-center">
+              {renderResult(testcases.status_id)}
+           </div>
+        </div>
+       ))}
       </div>
     )
 }

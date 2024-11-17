@@ -1,4 +1,4 @@
-import { PrismaClient, Problem, Contest } from "@prisma/client";
+import { PrismaClient, Problem, Contest, submissions } from "@prisma/client";
 
 const prismaClientSingleton = () => {
   return new PrismaClient();
@@ -16,4 +16,4 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 // Export the Prisma client instance and types
 export default prisma;
-export type { Problem, Contest };
+export type { Problem, Contest, submissions };
