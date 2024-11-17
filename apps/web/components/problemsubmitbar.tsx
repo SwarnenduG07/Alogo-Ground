@@ -1,7 +1,14 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import axios from "axios";
 import { ISubmission, SubmissionTable } from "./submissionTable";
+import { object } from "zod";
+import { LANGUAGE_MAPPING } from "@repo/common/language";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import { i } from "framer-motion/client";
+import { Label } from "./ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 interface Iproblem {
     id: string;
     title :string;
@@ -11,6 +18,12 @@ interface Iproblem {
         languageId : number;
         code: string;
     }[];
+}
+enum SubmitStatus {
+  SUBMIT = "SUBMIT",
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  FAILED = "FAILED"
 }
 
 export const ProblemSubmitBar = ({problem, contestId}: {
@@ -73,5 +86,93 @@ function SubmitProblem ({
   problem: Iproblem;
   contestId?:string;
 }) {
-  
+     const [language, setLangage] = useState(
+       Object.keys(LANGUAGE_MAPPING)[0] as string
+     )
+
+     const [code, setCode] = useState<Record<string, string>>({})
+     const [status, setStatus] = useState<string>(SubmitStatus.SUBMIT);
+     const [testcases, setTestcases] = useState<any[]>([]);
+     const [token, serToken] = useState<string>("");
+     const session = useSession();
+
+     useEffect(() => {
+      const defaultCode : {[key: string]: string} = {}
+      problem.defaultCode.forEach((code) => {
+        const language = Object.keys(LANGUAGE_MAPPING).find(
+          (language) => LANGUAGE_MAPPING[language]?.internal === code.languageId
+        );
+        if(!language) return;
+        defaultCode[language] = code.code;
+      });
+      setCode(defaultCode);
+     },[problem]);
+
+     async function pollwithBackOff(id: string, retries: number) {
+          if (retries === 0) {
+            setStatus(SubmitStatus.SUBMIT);
+            toast.error("Not able to get Status");
+            return;
+          }
+          const response = await axios.get(`/api/submission/?id=${id}`);
+
+          console.log(response.data.submission);
+          if(response.data.submission.status === "PENDING") {
+            setTestcases(response.data.submission.testcases);
+            await new Promise((resolve) => setTimeout(resolve, 2.5 * 1000));
+            pollwithBackOff(id, retries -1);
+          } else {
+            if(response.data.submission.status === "AC") {
+              setStatus(SubmitStatus.ACCEPTED);
+              setTestcases(response.data.submission.testcases);
+              toast.success("Accepted!");
+              return;
+            } else {
+              setStatus(SubmitStatus.FAILED)
+              toast.error("Failed: (");
+              setTestcases(response.data.submission.testcases);
+              return;
+            }
+          }
+       }
+     
+    async function submit() {
+       setStatus(SubmitStatus.SUBMIT);
+       setTestcases((t) => t.map((tc) => ({ ...tc, status:"PENDING"})));
+       try {
+         const response = await axios.post(`/api/submission/`, {
+          code: code[language],
+          languageId: language,
+          problemId: problem.id,
+          activeContestId: contestId,
+          token :token,
+         });
+         pollwithBackOff(response.data.id, 10);
+       } catch (e) {
+        //@ts-ignore
+        toast.error(e.response.statusText);
+          setStatus(SubmitStatus.SUBMIT);
+       }
+    }    
+    return (
+      <div>
+           <Label htmlFor="language">Language</Label>
+           <Select
+           value={language}
+           defaultValue="cpp"
+           onValueChange={(value) => setLangage(value)}
+           >
+            <SelectTrigger>
+              <SelectValue placeholder="Select langauge" />
+            </SelectTrigger>
+              <SelectContent>
+                {Object.keys(LANGUAGE_MAPPING).map((language) => (
+                  <SelectItem key={language} value={language}>
+                      {LANGUAGE_MAPPING[language].name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+           </Select>
+      </div>
+    )
 }

@@ -1,7 +1,6 @@
 import { authOptions } from "@/lib/auth.action";
 import { dbCLient } from "@/src/app/db";
 import { getServerSession } from "next-auth";
-import { Urbanist } from "next/font/google";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req:NextRequest) {
