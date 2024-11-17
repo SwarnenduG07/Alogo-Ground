@@ -1,3 +1,4 @@
+ import  { Editor } from "@monaco-editor/react"
 import { use, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import axios from "axios";
@@ -173,6 +174,25 @@ function SubmitProblem ({
                 ))}
               </SelectContent>
            </Select>
+           <div className="pt-3 rounded-md">
+               <Editor 
+               height={"60vh"}
+               value={code[language]}
+               theme="vs-dark"
+               onMount={() => {}}
+               options={{
+                fontSize: 14,
+                scrollBeyondLastLine: false,
+               }}
+               language={LANGUAGE_MAPPING[language]?.monaco}
+               onChange={(value) => {
+                //@ts-ignore
+                setCode({...code, [language]: value})
+               }}
+               defaultLanguage="javascript"
+               />
+           </div>
+           
       </div>
     )
 }
