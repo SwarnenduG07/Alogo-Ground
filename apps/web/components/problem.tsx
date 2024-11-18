@@ -1,4 +1,9 @@
 import { getProblems } from "@/src/app/db/problem";
+import { form } from "framer-motion/client";
+import { redirect } from "next/dist/server/api-utils";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export async function Problems({ query }: {query: string | null}) {
      const problems = await getProblems(query ? query: undefined);
@@ -14,10 +19,68 @@ export async function Problems({ query }: {query: string | null}) {
                     </p>
                 </div>
                 <div>
-                    <form action="">
-                        
+                    <form action={async (form) => {
+                        "use server";
+                        const currentQuery = form.get("query");
+                        if (currentQuery || (query && !currentQuery)) {
+                            redirect(`/problems?query=${currentQuery}`);
+                        }
+                    }}
+                       className="flex gap-2 items-center"                    
+                     >
+                          <Input 
+                          className="w-auto"
+                          name="query"
+                          placeholder="Search problems"
+                          />
+                          <Button size={"sm"} variant={"secondary"}>
+                               Search
+                          </Button>
                     </form>
+                    {query && (
+                        <Link className="text-sm mt-1 text-blue-500 underline"
+                        href={"/problems"}
+                        >
+                           Clear Search
+                        </Link>
+                    )}
                 </div>
+                <div className="mt-6">
+                    <div className="border-2 rounded-md overflow-hidden dark:bg-background">
+                        <div className="flex bg-muted font-bold">
+                            <div className="px-2 py-2 flex-1">Name</div>
+                            <div className="px-2 py-2 text-center w-[100px]">Difficulty</div>
+                            <div className="px-2 py-2 flex-1 text-center w-[100px]">Status</div>
+                        </div>
+                        {problems.map((problems) => (
+                                <Link
+                                href={`/problem/${problems.id}`}
+                                className="flex text-muted-foreground hover:bg-muted/50 duration-300"
+                                key={problems.id}
+                              >
+                                <div className="px-2 py-2 flex-1 font-medium  capitalize">
+                                  {problems.title.split("-").join(" ")}
+                                </div>
+                                <div className=" px-2 py-2 text-center w-[100px] capitalize">
+                                  {problems.difficulty.toLocaleLowerCase()}
+                                </div>
+                                <div className="px-2 py-2 text-center w-[100px]">-</div>
+                             </Link>
+                        ))}
+                    </div>
+                </div>
+                {problems.length === 0 && (
+               <div className="flex flex-col items-center md:mt-12">
+            <h1 className="lg:text-4xl md:text-2xl text-lg text-muted-foreground font-bold">
+              No problems found{" "}
+            </h1>
+            {query && (
+              <p className="text-muted-foreground dark:text-gray-400 mt-2">
+                Try searching for another problem
+              </p>
+            )}
+          </div>
+        )}
             </div>
         </section>
      )
