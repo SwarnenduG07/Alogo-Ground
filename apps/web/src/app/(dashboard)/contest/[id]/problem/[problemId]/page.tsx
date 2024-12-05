@@ -1,3 +1,4 @@
+"use client"
 import ProblemStatement from "@/components/problemstatement";
 import { ProblemSubmitBar } from "@/components/problemsubmitbar";
 import { getProblem } from "@/src/app/db/problem";

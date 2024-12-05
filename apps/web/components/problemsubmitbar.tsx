@@ -1,5 +1,6 @@
- import  { Editor } from "@monaco-editor/react"
-import { use, useEffect, useState } from "react";
+"use client"
+import  { Editor } from "@monaco-editor/react"
+import {  useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import axios from "axios";
 import { ISubmission, SubmissionTable } from "./submissionTable";
@@ -12,7 +13,6 @@ import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Button } from "./ui/button";
 import { CircleX, ClockIcon } from "lucide-react";
-import { div } from "framer-motion/client";
 
 const TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ||
