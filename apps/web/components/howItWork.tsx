@@ -40,7 +40,7 @@ const HowItWorks = () => {
           Unlock the Full Potential of Competitive Programming with These Key
           Features
         </div>
-        <div className="lg:grid md:grid grid gap-2 grid-cols-1 md:grid-cols-2 p-2 cursor-pointer ">
+        <div className="lg:grid md:grid grid gap-4 grid-cols-1 md:grid-cols-2 p-2 cursor-pointer ">
           {Feature.map((lang: any, index: number) => (
             <div
               className={`border-[1px] rounded-md p-2 text-start gap-2 flex flex-col  ${
