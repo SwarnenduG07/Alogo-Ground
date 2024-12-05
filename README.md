@@ -1,14 +1,9 @@
-# Turborepo Tailwind CSS starter
-
-This is an official starter Turborepo.
+# AlgoPrep
 
 ## Using this example
 
 Run the following command:
 
-```sh
-npx create-turbo@latest -e with-tailwind
-```
 
 ## What's inside?
 
