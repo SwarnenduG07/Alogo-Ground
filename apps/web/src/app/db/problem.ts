@@ -1,7 +1,7 @@
 import { dbCLient } from "."
 import { Problem } from "@repo/db/client";
 
-export const getProblem = async (problemId: string, contestId:string) => {
+export const getProblem = async (problemId: string, contestId?:string) => {
      if(contestId) {
         const contest = await dbCLient.contest.findFirst({
             where: {

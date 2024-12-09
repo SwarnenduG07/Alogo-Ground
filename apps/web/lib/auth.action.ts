@@ -156,9 +156,9 @@ export const authOptions:NextAuthOptions = {
     },
     async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
       if (url === '/signin') {
-        return `${baseUrl}/contest`;  
+        return `${baseUrl}/contests`;  
       }
-      return `${baseUrl}/contest`;  
+      return `${baseUrl}/contests`;  
     },
   },
   pages: {

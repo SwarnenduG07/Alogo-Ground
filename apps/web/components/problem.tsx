@@ -1,6 +1,5 @@
 import { getProblems } from "@/src/app/db/problem";
-import { form } from "framer-motion/client";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";

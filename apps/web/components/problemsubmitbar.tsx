@@ -36,7 +36,7 @@ enum SubmitStatus {
 
 export const ProblemSubmitBar = ({problem, contestId}: {
     problem: Iproblem,
-    contestId: string,
+    contestId?: string,
 }) => {
 
     const [activeTab , setActiveTab] = useState("problem");
