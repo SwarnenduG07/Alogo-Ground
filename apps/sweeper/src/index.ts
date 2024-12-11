@@ -1,41 +1,83 @@
 import { Prisma } from "@prisma/client";
+import { updateContest, updateMemoryAndExecutionTime } from "./utils";
 import { dbCLient } from "../db";
-
 type SubmissionWithTestcases = Prisma.SubmissionGetPayload<{
-    include: {
-      testcases: true;
-    };
-  }>;
-async function uodateSubmission(queued_Submission:SubmissionWithTestcases) {
-     var isAccepted = true
+  include: {
+    testcases: true;
+  };
+}>;
 
-     for(const testcases of queued_Submission?.testcases || []) {
-        switch(testcases.status_id) {
-            case 1:
-            case 2:
+async function updateSubmission(queued_Submission: SubmissionWithTestcases) {
+  var isAcceptable = true;
 
+  for (const testcase of queued_Submission?.testcases || []) {
+    switch (testcase.status_id) {
+      case 1:
+      case 2:
+        // 1 => Queue, 2 => Processing
+        // Revisit later if Processing
+        isAcceptable = false;
+        break;
+      case 3:
+        // 3 => Accepted
+        // Check Next
+        break;
+      default:
+        // ...Others => Errors and UnAccepted
+        // Can break the flow immediately
+        isAcceptable = false;
+        await dbCLient.submission.update({
+          where: {
+            id: queued_Submission.id,
+          },
+          data: {
+            status: "REJECTED",
+          },
+        });
+        return; // Exit early since the flow is broken
+    }
 
-            isAccepted = false;
-            break;
-            case 3:
-                break;
-            default:
-                isAccepted = false;
-                await dbCLient.submission.update({
-                    where :{
-                        id: queued_Submission.id,
-                    },
-                    data: {
-                        status :"REJECTED",
-                    },
-                });
-                return;
-        }
-        if(!isAccepted) {
-            break;
-        }
-     }
-     if(isAccepted && queued_Submission?.testcases) {
-        
-     }
+    if (!isAcceptable) {
+      break;
+    }
+  }
+
+  if (isAcceptable && queued_Submission?.testcases) {
+    updateMemoryAndExecutionTime(queued_Submission);
+    if (queued_Submission?.activeContestId) {
+      updateContest(queued_Submission);
+    }
+    await dbCLient.submission.update({
+      where: {
+        id: queued_Submission.id,
+      },
+      data: {
+        status: "AC",
+      },
+    });
+  }
 }
+
+async function runMainLoop() {
+  while (true) {
+    try {
+      const submissions = await dbCLient.submission.findMany({
+        orderBy: {
+          id: "desc",
+        },
+        take: 20,
+        include: {
+          testcases: true,
+        },
+      });
+      for (const submission of submissions || []) {
+        await updateSubmission(submission);
+      }
+    } catch (err) {
+      console.error("Error during processing:", err);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Add a delay of 1 second
+  }
+}
+
+runMainLoop();

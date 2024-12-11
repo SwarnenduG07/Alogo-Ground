@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { dbCLient } from "../db";
+import { getPoints } from "./points";
 
 
 type SubmissionWithTestcases = Prisma.SubmissionGetPayload<{
@@ -73,14 +74,14 @@ export async function updateContest(submission: SubmissionWithTestcases) {
 
   await dbCLient.contestSubmission.upsert({
     where: {
-      userId_problemId_contestId: {
+      userId_contestId_problemId: {
         contestId: submission.activeContestId,
         userId: submission.userId,
         problemId: submission.problemId,
       },
     },
     create: {
-      submissionId: submission.id,
+      submissionid: submission.id,
       userId: submission.userId,
       problemId: submission.problemId,
       contestId: submission.activeContestId,
