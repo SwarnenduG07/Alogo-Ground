@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "5.20.0",
+    "@repo/db": "workspace:*",
+    "nodemon": "^3.1.7"
+  }
 }
