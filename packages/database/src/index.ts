@@ -16,4 +16,4 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 // Export the Prisma client instance and types
 export default prisma;
-export type { Problem, Contest, submissions };
+export type { Problem, Contest, submissions,prisma };
