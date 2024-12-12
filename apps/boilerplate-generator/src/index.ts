@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
+import { ProblemDefinitionParser } from "./ProblemDefinitionGenerator";
 
 import dotenv from 'dotenv'
-import { FullProblemDefinaionParser } from "./FullProblemDefinationGenerator";
-import { ProblemDefinaionParser } from "./ProblemDefinitionGenerator";
+import { FullProblemDefinitionParser } from "./FullProblemDefinationGenerator";
 dotenv.config()
 
 function generatePartialBoilerplate(generatorFilePath: string) {
@@ -17,7 +17,7 @@ function generatePartialBoilerplate(generatorFilePath: string) {
   const input = fs.readFileSync(inputFilePath, "utf-8");
 
   // Parse the input
-  const parser = new ProblemDefinaionParser();
+  const parser = new ProblemDefinitionParser();
   parser.parse(input);
 
   // Generate the boilerplate code
@@ -51,10 +51,10 @@ function generateFullBoilerPLate(generatorFilePath: string) {
   const input = fs.readFileSync(inputFilePath, "utf-8");
 
   // Parse the input
-  const parser = new FullProblemDefinaionParser();
+  const parser = new FullProblemDefinitionParser();
   parser.parse(input);
 
-  // Generate the Full boilerplate code
+  // Generate the boilerplate code
   const cppCode = parser.generateCpp();
   const jsCode = parser.generateJs();
   const rustCode = parser.generateRust();
@@ -65,13 +65,13 @@ function generateFullBoilerPLate(generatorFilePath: string) {
     fs.mkdirSync(boilerplatePath, { recursive: true });
   }
 
-  // Write the Fullboilerplate code to respective files
+  // Write the boilerplate code to respective files
   fs.writeFileSync(path.join(boilerplatePath, "function.cpp"), cppCode);
   fs.writeFileSync(path.join(boilerplatePath, "function.js"), jsCode);
   fs.writeFileSync(path.join(boilerplatePath, "function.rs"), rustCode);
   fs.writeFileSync(path.join(boilerplatePath, "function.java"), javaCode);
 
-  console.log("Boilerplate Fullcode generated successfully!");
+  console.log("Boilerplate Full code generated successfully!");
 }
 
 const getFolders = (dir: string) => {
