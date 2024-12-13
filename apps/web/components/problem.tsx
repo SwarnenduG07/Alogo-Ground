@@ -45,11 +45,11 @@ export async function Problems({ query }: {query: string | null}) {
                     )}
                 </div>
                 <div className="mt-6">
-                    <div className="border-2 rounded-md overflow-hidden dark:bg-background">
+                    <div className="border-2 rounded-md  overflow-hidden dark:bg-background">
                         <div className="flex bg-muted font-bold">
                             <div className="px-2 py-2 flex-1">Name</div>
-                            <div className="px-2 py-2 text-center w-[100px]">Difficulty</div>
-                            <div className="px-2 py-2 flex-1 text-center w-[100px]">Status</div>
+                            <div className="mr-[465px] py-2 w-[100px]">Difficulty</div>
+                            <div className="pr-20 py-2 text-center w-[100px]">Status</div>
                         </div>
                         {problems.map((problems) => (
                                 <Link
@@ -60,10 +60,10 @@ export async function Problems({ query }: {query: string | null}) {
                                 <div className="px-2 py-2 flex-1 font-medium  capitalize">
                                   {problems.title.split("-").join(" ")}
                                 </div>
-                                <div className=" px-2 py-2 text-center w-[100px] capitalize">
+                                <div className="mr-[465px] py-2  w-[100px] capitalize">
                                   {problems.difficulty.toLocaleLowerCase()}
                                 </div>
-                                <div className="px-2 py-2 text-center w-[100px]">-</div>
+                                <div className="px-5 py-2 flex text-center w-[100px]">-</div>
                              </Link>
                         ))}
                     </div>

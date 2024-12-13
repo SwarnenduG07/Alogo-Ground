@@ -1,3 +1,4 @@
+import Navbar from "@/components/navbar";
 import { Problems } from "@/components/problem";
 
 export default function Page({
@@ -5,6 +6,7 @@ export default function Page({
 } :{searchParams: {query: string | null}; }): JSX.Element {
   return (
     <main>
+      <Navbar />
        <Problems query={searchParams.query}/>
     </main>
   )

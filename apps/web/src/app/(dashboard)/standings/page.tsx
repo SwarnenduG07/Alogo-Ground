@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Table } from "lucide-react";

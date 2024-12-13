@@ -18,7 +18,7 @@ export default async function ProblemPage({
         <div className="flwx flex-col">
             <main className="flex-1 py-8 md:py-12 md:grid-cols-2 gap-8 md:gap-12 px-2">
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
-                    <div className="prose prose-stone dark:prose-invert">
+                    <div className="font-bold  rounded-md p-2">
                         <ProblemStatement description={problem.description} />
                     </div>
                     <div>

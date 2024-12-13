@@ -9,10 +9,7 @@
   "scripts": {
     "db:migrate:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
-    "db:seed": "tsx src/seed.ts",
-    "format": "prisma format",
-    "generate": "prisma generate"
-
+    "db:question": "ts-node prisma/updateQuestion.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +20,7 @@
   },
   "dependencies": {
     "@prisma/client": "5.20.0",
-    "@repo/common": "workspace:*"
-
+    "@repo/common": "workspace:*",
+    "ts-node": "^10.9.2"
   }
 }
