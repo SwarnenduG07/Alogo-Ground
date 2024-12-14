@@ -74,18 +74,19 @@ model DefaultCode {
   code       String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  langauge   Language @relation(fields: [languageId], references: [id])
+  language   Language @relation(fields: [languageId], references: [id]) // Fixed typo
   problem    Problem  @relation(fields: [problemId], references: [id])
 
   @@unique([problemId, languageId])
 }
+
 model Language {
   id          Int           @id @default(autoincrement())
   name        String
-  judfe0Id    Int
+  judge0Id    Int           @unique
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  defaultcode DefaultCode[]
+  DefaultCode DefaultCode[]
 }
 
 model Submission {

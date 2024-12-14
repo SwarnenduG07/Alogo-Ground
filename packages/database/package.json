@@ -7,9 +7,13 @@
   "description": "The main db of the project",
   "main": "index.js",
   "scripts": {
-    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate": "pnpm dlx prisma migrate dev & pnpm dlx prisma generate",
     "db:push": "prisma db push",
+    "db:seed": "pnpm dlx prisma db seed",
     "db:question": "ts-node prisma/updateQuestion.ts"
+  },
+  "prisma": {
+    "seed": "pnpm dlx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
