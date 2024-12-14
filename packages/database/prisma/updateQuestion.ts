@@ -1,6 +1,7 @@
 import { LANGUAGE_MAPPING } from "@repo/common/language";
 import fs from "fs";
-import prismaClient from "../src";
+import prisma from "../src";
+import { log } from "console";
 
 const MOUNT_PATH = process.env.MOUNT_PATH ?? "../../apps/problems";
 function promisifedReadFile(path: string): Promise<string> {
@@ -19,7 +20,7 @@ async function main(problemSlug: string, problemTitle: string) {
     `${MOUNT_PATH}/${problemSlug}/Problem.md`
   );
 
-  const problem = await prismaClient.problem.upsert({
+  const problem = await prisma.problem.upsert({
     where: {
       slug: problemSlug,
     },
@@ -39,7 +40,7 @@ async function main(problemSlug: string, problemTitle: string) {
       const code = await promisifedReadFile(
         `${MOUNT_PATH}/${problemSlug}/boilerplate/function.${language}`
       );
-      await prismaClient.defaultCode.upsert({
+      await prisma.defaultCode.upsert({
         where: {
           problemId_languageId: {
             problemId: problem.id,
@@ -55,19 +56,47 @@ async function main(problemSlug: string, problemTitle: string) {
           code,
         },
       });
-      console.log("Added boilerplate default code");
+      console.log("Default codepushed for", problemSlug);
+      
     })
   );
 }
 
-export function addProblemsInDB() {
-  fs.readdir(MOUNT_PATH, (err, dirs) => {
-    if (err) {
-      console.error("Error reading directory:", err);
-      return;
-    }
-    dirs.forEach(async (dir) => {
-      await main(dir, dir);
+export async function addProblemsInDB() {
+  try {
+    const dirs = await new Promise<string[]>((resolve, reject) => {
+      fs.readdir(MOUNT_PATH, (err, dirs) => {
+        if (err) reject(err);
+        else resolve(dirs.filter(dir => !dir.startsWith('.')));  // Filter hidden files
+      });
     });
-  });
+
+    console.log(`Found ${dirs.length} problems to process in ${MOUNT_PATH}`);
+    
+    for (const dir of dirs) {
+      try {
+        console.log(`Processing problem: ${dir}`);
+        await main(dir, dir);
+        console.log(`Successfully processed problem: ${dir}`);
+      } catch (error) {
+        console.error(`Error processing problem ${dir}:`, error);
+      }
+    }
+  } catch (error) {
+    console.error("Error reading problems directory:", error);
+    throw error;
+  }
+}
+
+// At the bottom of the file
+if (require.main === module) {
+  addProblemsInDB()
+    .then(() => {
+      console.log("Finished processing problems");
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      process.exit(1); 
+    });
 }
