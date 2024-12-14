@@ -1,9 +1,5 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/pxkBLMqmzHi
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-  import { CheckIcon, ClockIcon, CircleX } from "lucide-react";
+
+import { CheckIcon, ClockIcon, CircleX } from "lucide-react";
 import { TableBody ,Table,
     TableHeader,
     TableRow,

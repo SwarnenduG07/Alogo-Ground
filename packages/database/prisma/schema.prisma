@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,18 +8,18 @@ datasource db {
 }
 
 model User {
-  id          String @id @default(cuid())
-  email       String @unique
-  username    String @unique
-  token       String?
-  firstname   String
-  lastname    String
-  password    String
-  createdAt   DateTime  @default(now())
-  role        userRole  @default(USER)
-  contestSubmissions  ContestSubmission[]
-  Submission      Submission[]
-  contestPoints   ContestPoints[]
+  id                 String              @id @default(cuid())
+  username           String              @unique
+  firstname          String
+  lastname           String
+  email              String              @unique
+  password           String
+  createdAt          DateTime            @default(now())
+  role               userRole            @default(USER)
+  token              String?
+  contestPoints      ContestPoints[]
+  contestSubmissions ContestSubmission[]
+  Submission         Submission[]
 }
 
 model Contest {
@@ -34,125 +28,108 @@ model Contest {
   description        String
   startTime          DateTime
   hidden             Boolean             @default(true)
-  submissions        Submission[]
   endTime            DateTime
   createdAt          DateTime            @default(now())
+  leaderboard        Boolean             @default(false)
   updatedAt          DateTime            @updatedAt
   problems           ContestProblem[]
   contestSubmissions ContestSubmission[]
-  leaderboard        Boolean             @default(false)
+  submissions        Submission[]
 }
 
 model ContestProblem {
-    id          String @id @default(cuid())
-    contestId   String
-    problemId   String
-    createdat   DateTime  @default(now())
-    updateAt    DateTime @updatedAt
-    contest     Contest  @relation(fields: [contestId], references: [id])
-    problem     Problem  @relation(fields: [problemId], references: [id])
-    index       Int
-    solved      Int    @default(0)
+  id        String   @id @default(cuid())
+  contestId String
+  createdat DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  index     Int
+  solved    Int      @default(0)
+  problemId String
+  contest   Contest  @relation(fields: [contestId], references: [id])
+  problem   Problem  @relation(fields: [problemId], references: [id])
 
-    @@unique([contestId, problemId])
+  @@unique([contestId, problemId])
 }
 
 model Problem {
-  id          String       @id @default(cuid())
-  title       String
-  description String
-  hidden      Boolean      @default(true)
-  slug        String       @unique
-  solved      Int          @default(0)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime    @updatedAt
-  Contest             ContestProblem[]
-  Submissions         Submission[]
-  ContestSubmissions  ContestSubmission[]
-  defaultCode         DefaultCode[]
-  difficulty          Difficulty @default(MEDIUM)
+  id                 String              @id @default(cuid())
+  title              String
+  description        String
+  hidden             Boolean             @default(true)
+  slug               String              @unique
+  solved             Int                 @default(0)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  difficulty         Difficulty          @default(MEDIUM)
+  Contest            ContestProblem[]
+  ContestSubmissions ContestSubmission[]
+  defaultCode        DefaultCode[]
+  Submissions        Submission[]
 }
 
 model DefaultCode {
-  id            String    @id @default(cuid())
-  languageId    Int
-  problemId     String
-  code          String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  problem       Problem @relation(fields: [problemId], references: [id])
-  langauge      Language @relation(fields: [languageId], references: [id])
+  id         String   @id @default(cuid())
+  languageId Int
+  problemId  String
+  code       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  langauge   Language @relation(fields: [languageId], references: [id])
+  problem    Problem  @relation(fields: [problemId], references: [id])
 
   @@unique([problemId, languageId])
-
+}
+model Language {
+  id          Int           @id @default(autoincrement())
+  name        String
+  judfe0Id    Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  defaultcode DefaultCode[]
 }
 
 model Submission {
-  id              String   @id @default(cuid())
+  id              String           @id @default(cuid())
   problemId       String
   userId          String
   code            String
   activeContestId String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime? @updatedAt
-  status          SubmissionResult  @default(PENDING)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime?        @updatedAt
+  status          SubmissionResult @default(PENDING)
   memory          Int?
   time            Float?
+  activeContest   Contest?         @relation(fields: [activeContestId], references: [id])
+  problem         Problem          @relation(fields: [problemId], references: [id])
+  user            User             @relation(fields: [userId], references: [id])
   testcases       submissions[]
-  activeContest   Contest?   @relation(fields: [activeContestId], references: [id])
-  user            User       @relation(fields: [userId], references: [id])
-  problem         Problem    @relation(fields: [problemId], references: [id])    
 }
 
 
-model Language {
-  id            Int       @id @default(autoincrement())
-  name          String
-  judfe0id      Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  defaultcode   DefaultCode[]
-
-}
 
 model ContestSubmission {
-  id              String    @id @default(cuid())
-  userId          String
-  problemId       String
-  contestId       String
-  submissionid    String
-  points          Int
-  user            User  @relation(fields: [userId], references: [id])
-  problem         Problem @relation(fields: [problemId], references: [id])
-  contest         Contest @relation(fields: [contestId], references: [id])
-  @@unique([userId, contestId, problemId])
+  id           String  @id @default(cuid())
+  userId       String
+  problemId    String
+  contestId    String
+  submissionid String
+  points       Int
+  contest      Contest @relation(fields: [contestId], references: [id])
+  problem      Problem @relation(fields: [problemId], references: [id])
+  user         User    @relation(fields: [userId], references: [id])
 
+  @@unique([userId, contestId, problemId])
 }
 
 model ContestPoints {
-  id          String @id @default(cuid())
-  contestId   String
-  userId      String
-  points      Int
-  rank        Int
-  user        User @relation(fields: [userId], references: [id])
+  id        String @id @default(cuid())
+  contestId String
+  userId    String
+  points    Int
+  rank      Int
+  user      User   @relation(fields: [userId], references: [id])
+
   @@unique([contestId, userId])
-}
-
-enum SubmissionResult {
-  AC
-  REJECTED
-  PENDING
-}
-enum userRole {
-  ADMIN
-  USER
-}
-
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
 }
 
 model ar_internal_metadata {
@@ -164,10 +141,10 @@ model ar_internal_metadata {
 
 model Languages {
   id          Int      @id @default(autoincrement())
-  name        String?  @db.VarChar()
-  compile_cmd String?  @db.VarChar()
-  rum_cmd     String?  @db.VarChar()
-  source_file String?  @db.VarChar()
+  name        String?  @db.VarChar
+  compile_cmd String?  @db.VarChar
+  rum_cmd     String?  @db.VarChar
+  source_file String?  @db.VarChar
   is_archived Boolean? @default(false)
 }
 
@@ -206,9 +183,25 @@ model submissions {
   callback_url                               String?     @db.VarChar
   additional_files                           Bytes?
   enable_network                             Boolean?
-  Submission                                 Submission? @relation(fields: [submissionId], references: [id])
   submissionId                               String?
+  Submission                                 Submission? @relation(fields: [submissionId], references: [id])
 
   @@index([token], map: "index_submissions_on_token")
 }
 
+enum SubmissionResult {
+  AC
+  REJECTED
+  PENDING
+}
+
+enum userRole {
+  ADMIN
+  USER
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
