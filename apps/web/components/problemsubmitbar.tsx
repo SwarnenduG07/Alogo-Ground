@@ -105,16 +105,16 @@ function SubmitProblem ({
      const session = useSession();
 
      useEffect(() => {
-      const defaultCode : {[key: string]: string} = {}
+      const defaultCode: { [key: string]: string } = {};
       problem.defaultCode.forEach((code) => {
         const language = Object.keys(LANGUAGE_MAPPING).find(
           (language) => LANGUAGE_MAPPING[language]?.internal === code.languageId
         );
-        if(!language) return;
+        if (!language) return;
         defaultCode[language] = code.code;
       });
       setCode(defaultCode);
-     },[problem]);
+    }, [problem.id]);
 
      async function pollwithBackOff(id: string, retries: number) {
           if (retries === 0) {

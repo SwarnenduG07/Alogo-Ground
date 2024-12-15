@@ -56,6 +56,7 @@ export const ContestProblemTable = ({contest}: {
                      <TableBody>
                         {contest.problems.map(({problem}) => (
                              <ProblemRow 
+                                key={problem.id}
                                 points={contest.contestSubmissions.find(
                                     (submission) => submission.problemId === problem.id
                                 )?.points || 0}

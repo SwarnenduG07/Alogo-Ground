@@ -29,3 +29,5 @@ export default async function ProblemPage({
         </div>
      )
 }
+
+// export const dynamic = "force-dynamic"

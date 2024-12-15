@@ -1,11 +1,10 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs"
 import z from "zod";
 import { dbCLient } from "@/src/app/db";
 import { NextAuthOptions, User } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import { JWT } from "next-auth/jwt";
-import { Session } from "next-auth";
 
 declare module "next-auth" {
 
@@ -164,5 +163,6 @@ export const authOptions:NextAuthOptions = {
   pages: {
     signIn: "/signin",
     signOut: "/", 
+    error: "/",
   },
 };

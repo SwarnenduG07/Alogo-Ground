@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { IconBrandGit, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import {  IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 
 const hasUpperCase = (password: string) => /[A-Z]/.test(password);
 const hasNumber =  (password: string) =>  /[0-9]/.test(password);

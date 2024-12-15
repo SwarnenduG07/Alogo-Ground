@@ -4,7 +4,7 @@ import Contest from '@/components/contest'
 import Navbar from '@/components/navbar'
 import React from 'react'
 
-const page = () => {
+export default function page():JSX.Element  {
   return (
     <div>
        <Navbar />
@@ -13,4 +13,4 @@ const page = () => {
   )
 }
 
-export default page
+// export const dynamic = "force-dynamic";

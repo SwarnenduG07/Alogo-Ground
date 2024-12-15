@@ -27,7 +27,7 @@ export function ContestPointsTable({
       </TableHeader>
       <TableBody>
         {contestPoints.map((contestPoint) => (
-          <TableRow>
+          <TableRow key={contestPoint.user.id}>
             <TableCell className={getClassName(contestPoint)}>
               {contestPoint.rank}
             </TableCell>

@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button } from './ui/button'
 import { signOut } from 'next-auth/react'
+import Link from 'next/link'
 
 const Navbar = () => {
   return (
@@ -11,9 +12,9 @@ const Navbar = () => {
                algo-play
             </div>
             <div className=' space-x-4 font-semibold cursor-pointer'>
-              <a href="/contest">Contest</a>  
-              <a href="/problems">Problem</a>  
-              <a href="/standings">Standings</a>  
+              <Link href="/contest">Contest</Link>  
+              <Link href="/problems">Problem</Link>  
+              <Link href="/standings">Standings</Link>  
             </div> 
             <div className='mr-2'>
               <Button onClick={() => 
