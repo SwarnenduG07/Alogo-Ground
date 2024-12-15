@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const Hero = () => {
   return (
-    <main className=''>
+    <main className='h-screen bg-gradient-to-br from-zinc-700 from-[-10%] via-slate-950 via-[30%] to-neutral-900 to-[100%] overflow-auto'>
         <div className='flex justify-items-start lg:mt-24 md:mt-24 mt-20 lg:ml-36 md:ml-32 ml-12 flex-col text-neutral-200'>
             <h1 className='font-medium font-serif lg:text-5xl md:text-5xl text-4xl'>
                 Algoprep is a purpose to <br /> be good in algo & Dsa

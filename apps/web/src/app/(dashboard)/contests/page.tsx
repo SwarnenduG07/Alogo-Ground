@@ -1,5 +1,4 @@
 
-
 import Contest from '@/components/contest'
 import Navbar from '@/components/navbar'
 import React from 'react'
