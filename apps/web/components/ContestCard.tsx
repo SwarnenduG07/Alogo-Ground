@@ -17,9 +17,9 @@ export function ContestCard  ({ title, id, endTime, startTime}: Contestcaedparam
     const duraction = `${(new Date(endTime).getTime() - new Date(startTime).getTime()) / (1000 * 60 * 60)} hours`;
     const isActive = startTime.getTime() < Date.now() && endTime.getTime() > Date.now();
   return (
-    <Card>
+    <Card className='mr-[700px]'>
         <CardHeader>
-          <div className='flex justify-between'>
+          <div className='flex justify-between mr-7'>
             <CardTitle>{title}</CardTitle>
           <div>
           {startTime.getTime() < Date.now() && endTime.getTime() < Date.now() ? (
