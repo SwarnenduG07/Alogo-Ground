@@ -12,7 +12,7 @@ const Navbar = () => {
                algo-play
             </div>
             <div className=' space-x-4 font-semibold cursor-pointer'>
-              <Link href="/contest">Contest</Link>  
+              <Link href="/contests">Contest</Link>  
               <Link href="/problems">Problem</Link>  
               <Link href="/standings">Standings</Link>  
             </div> 
