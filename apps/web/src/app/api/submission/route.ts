@@ -93,7 +93,7 @@ export async function POST(req:NextRequest) {
     subbmissionInput.data.code
    );
    const response = await axios.post(
-    `${JUDGE0_URI}/submission/batch?base64_encoded=false`,
+    `${JUDGE0_URI}/submissions/batch?base64_encoded=false`,
     {
       submission: problem.inputs.map((index: any) => ({
         language_id: LANGUAGE_MAPPING[subbmissionInput.data.languageeId]?.judge0,
