@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --sourcemap",
+    "start": "esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --sourcemap && nodemon dist/index.js",
+    "dev": "nodemon ./src/index.ts",
+    "docker": "nodemon ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,6 +16,10 @@
   "dependencies": {
     "@prisma/client": "5.20.0",
     "@repo/db": "workspace:*",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.0"
   }
 }

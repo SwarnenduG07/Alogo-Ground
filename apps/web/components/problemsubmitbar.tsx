@@ -13,7 +13,6 @@ import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Button } from "./ui/button";
 import { CircleX, ClockIcon } from "lucide-react";
-import { log } from "console";
 
 const TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ||
@@ -251,7 +250,7 @@ function renderResult(status :number | null) {
 }
 
 function RenderTestCase({testcases} :{
-  testcases :SubmissionsType[]
+  testcases :SubmissionsType[];
 }) {
     return (
       <div className="grid gird-cols-6 gap-4">

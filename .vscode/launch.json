@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/Coding/projects/webdev/algo-play",
-      "program": "d:/Coding/projects/webdev/algo-play/build/Debug/outDebug",
+      "cwd": "d:/coding/projects/webdev/algo-play",
+      "program": "d:/coding/projects/webdev/algo-play/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
