@@ -7,7 +7,7 @@ interface Problem {
     outputs: string[];
 }
 
-const MOUNT_PATH = process.env.MOUNT_PATH ?? "/home/ubuntu/algorithmic-arena/apps/problems"
+const MOUNT_PATH = process.env.MOUNT_PATH ?? "D:\Coding\projects\webdev\algo-play\apps\problems"
 
 export const getProblem = async (
     problemId: string,
@@ -91,7 +91,7 @@ async function getProblemOutputs (problemId:string): Promise<string[]> {
                        files.map((file) => {
                            return new Promise<string>((resolve, reject) => {
                                fs.readFile(
-                                   `${MOUNT_PATH}/${problemId}/test/outputs/${file}`,
+                                   `${MOUNT_PATH}/${problemId}/tests/outputs/${file}`,
                                    {encoding : "utf-8"},
                                    (err, data) => {
                                        if (err) {
