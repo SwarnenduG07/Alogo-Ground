@@ -1,6 +1,6 @@
 import React from 'react'
 import { getExixtingContests, getRunningContests, getUpcomingContests } from '@/src/app/db/contest'
-import { ContestCard } from './contestCard';
+import { ContestCard } from './contest-card';
 
 export default async function contests()  {
 

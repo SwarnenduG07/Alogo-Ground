@@ -5,9 +5,11 @@ import { SubbmissionInput } from "@repo/common/zod";
 import { LANGUAGE_MAPPING } from "@repo/common/language";
 import { dbCLient } from "../../db";
 
-import { sub } from "framer-motion/client";
 import { getProblem } from "@/lib/problems";
 import axios from "axios";
+import { error, log } from "console";
+
+console.log(process.env.RAPIDAPI_KEY!);
 
 const SECRET_KEY = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY!;
 const JUDGE0_URI = process.env.JUDGE0_URI || "https://judge0-ce.p.rapidapi.com";
@@ -35,8 +37,10 @@ export async function POST(req:NextRequest) {
    if(!subbmissionInput.success) {
     return NextResponse.json(
         {
-            message: "Invalid Input"
+            message: "Invalid Input",
+            error: subbmissionInput.error.errors,
         },
+        
         {
             status: 400,
         }
@@ -47,25 +51,25 @@ export async function POST(req:NextRequest) {
    formData.append("secret", SECRET_KEY); 
    formData.append("response", subbmissionInput.data.token);
 
-   const result = await fetch(CLOUDFLARE_TURNSTILE_URL, {
-    body: formData,
-    method: "POST",
-   });
+  //  const result = await fetch(CLOUDFLARE_TURNSTILE_URL, {
+  //   body: formData,
+  //   method: "POST",
+  //  });
 
-   const challengeResult = await result.json();
+  //  const challengeResult = await result.json();
 
-   const challengeSecceeded  =challengeResult.success;
+  //  const challengeSecceeded  =challengeResult.success;
 
-   if(!challengeSecceeded && process.env.NODE_ENV === "production") {
-    return NextResponse.json(
-        {
-            message: "Invalid reCAPTCHA token",
-        },
-        {
-            status: 403,
-        }
-     );
-   }
+  //  if(!challengeSecceeded && process.env.NODE_ENV === "production") {
+  //   return NextResponse.json(
+  //       {
+  //           message: "Invalid reCAPTCHA token",
+  //       },
+  //       {
+  //           status: 403,
+  //       }
+  //    );
+  //  }
 
    const dbProblem = await dbCLient.problem.findUnique({
     where :{
@@ -85,7 +89,7 @@ export async function POST(req:NextRequest) {
 
    const problem = await getProblem(
     dbProblem.slug,
-    subbmissionInput.data.languageeId,
+    subbmissionInput.data.languageId,
    );
 
    problem.fullBoilerplateCode = problem.fullBoilerplateCode.replace(
@@ -96,13 +100,20 @@ export async function POST(req:NextRequest) {
     `${JUDGE0_URI}/submissions/batch?base64_encoded=false`,
     {
       submission: problem.inputs.map((index: any) => ({
-        language_id: LANGUAGE_MAPPING[subbmissionInput.data.languageeId]?.judge0,
+        language_id: LANGUAGE_MAPPING[subbmissionInput.data.languageId]?.judge0,
         source_code: problem.fullBoilerplateCode.replace(
           "##INPUT_FILE_INDEX##",
           index.toString()
         ),
         expected_output: problem.outputs[index],
       })),
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY!,
+      }
     }
    );
 

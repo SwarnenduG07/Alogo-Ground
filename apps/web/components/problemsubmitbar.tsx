@@ -13,6 +13,7 @@ import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Button } from "./ui/button";
 import { CircleX, ClockIcon } from "lucide-react";
+import { log } from "console";
 
 const TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ||
@@ -160,7 +161,10 @@ function SubmitProblem ({
         //@ts-ignore
         toast.error(e.response.statusText);
           setStatus(SubmitStatus.SUBMIT);
+          
+          
        }
+       
     }    
     return (
       <div>
