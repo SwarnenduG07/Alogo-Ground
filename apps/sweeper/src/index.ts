@@ -76,7 +76,7 @@ async function runMainLoop() {
     } catch (err) {
       console.error("Error during processing:", err);
     }
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Add a delay of 1 second
+    await new Promise((resolve) => setTimeout(resolve, 1000)); 
   }
 }
 
