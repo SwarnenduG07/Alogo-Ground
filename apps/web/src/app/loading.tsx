@@ -8,7 +8,7 @@ export default function Loading() {
         </div>
         <div className="flex items-center w-full max-w-[480px]">
             <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-                    <div className="h-2.5  bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+             <div className="h-2.5  bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
             <div className="h-2.5  bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
         </div>
         <div className="flex items-center w-full max-w-[400px]">
