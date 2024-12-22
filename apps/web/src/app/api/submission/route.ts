@@ -37,7 +37,7 @@ export async function POST(req:NextRequest) {
     return NextResponse.json(
         {
             message: "Invalid Input",
-            error: subbmissionInput.error.errors,
+            // error: subbmissionInput.error.errors,
         },
         
         {
@@ -47,7 +47,7 @@ export async function POST(req:NextRequest) {
    }
 
    let formData = new FormData();
-   formData.append("secret", SECRET_KEY); 
+  //  formData.append("secret", SECRET_KEY); 
    formData.append("response", subbmissionInput.data.token);
 
   //  const result = await fetch(CLOUDFLARE_TURNSTILE_URL, {
@@ -84,6 +84,21 @@ export async function POST(req:NextRequest) {
             status: 404
         }
      ); 
+   }
+   const userExist = await dbCLient.user.findUnique({
+     where: {
+      id:userId,
+     }
+   })
+   if (!userExist) { 
+     return NextResponse.json(
+      {
+        message: "user does not exist"
+      },
+      {
+        status: 404
+      }
+     )
    }
 
    const problem = await getProblem(
@@ -130,6 +145,8 @@ export async function POST(req:NextRequest) {
       testcases: true,
      },
    });
+   console.log("submission made for submission ID" , userId);
+   
    return NextResponse.json(
     {
       message: "Submission made",
