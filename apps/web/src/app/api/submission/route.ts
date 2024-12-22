@@ -7,7 +7,6 @@ import { dbCLient } from "../../db";
 
 import { getProblem } from "@/lib/problems";
 import axios from "axios";
-import { error, log } from "console";
 
 console.log(process.env.RAPIDAPI_KEY!);
 

@@ -74,7 +74,7 @@ model DefaultCode {
   code       String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  language   Language @relation(fields: [languageId], references: [id]) // Fixed typo
+  language   Language @relation(fields: [languageId], references: [id])
   problem    Problem  @relation(fields: [problemId], references: [id])
 
   @@unique([problemId, languageId])
@@ -83,9 +83,9 @@ model DefaultCode {
 model Language {
   id          Int           @id @default(autoincrement())
   name        String
-  judge0Id    Int           @unique
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  judge0Id    Int           @unique
   DefaultCode DefaultCode[]
 }
 
@@ -105,8 +105,6 @@ model Submission {
   user            User             @relation(fields: [userId], references: [id])
   testcases       submissions[]
 }
-
-
 
 model ContestSubmission {
   id           String  @id @default(cuid())
