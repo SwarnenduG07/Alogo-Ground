@@ -62,7 +62,7 @@ export const ProblemSubmitBar = ({problem, contestId}: {
                <SubmitProblem problem={problem}
                contestId={contestId}/>
             </div>
-            {activeTab === "submission" && <Submissions problem={problem}/>}
+            {activeTab === "submissions" && <Submissions problem={problem}/>}
           </div>
         </div>
     )

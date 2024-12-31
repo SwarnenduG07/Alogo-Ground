@@ -81,7 +81,7 @@ export async function POST(req:NextRequest) {
             message: "Problem not Found",
         },
         {
-            status: 404
+            status: 401
         }
      ); 
    }
@@ -96,7 +96,7 @@ export async function POST(req:NextRequest) {
         message: "user does not exist"
       },
       {
-        status: 404
+        status: 401
       }
      )
    }
@@ -113,13 +113,14 @@ export async function POST(req:NextRequest) {
    const response = await axios.post(
     `${JUDGE0_URI}/submissions/batch?base64_encoded=false`,
     {
-      submission: problem.inputs.map((index: any) => ({
+      submissions: problem.inputs.map((input: any, index: number) => ({
         language_id: LANGUAGE_MAPPING[subbmissionInput.data.languageId]?.judge0,
         source_code: problem.fullBoilerplateCode.replace(
           "##INPUT_FILE_INDEX##",
           index.toString()
         ),
         expected_output: problem.outputs[index],
+        stdin: input
       })),
     },
     {
@@ -131,19 +132,34 @@ export async function POST(req:NextRequest) {
     }
    );
 
+   if (!response.data || !Array.isArray(response.data)) {
+    return NextResponse.json(
+      {
+        message: "Invalid response from Judge0",
+        error: response.data
+      },
+      { status: 500 }
+    );
+   }
+
    const submission = await dbCLient.submission.create({
     data: {
       userId: session.user.id,
-      problemId :subbmissionInput.data.problemId,
-      code : subbmissionInput.data.code,
+      problemId: subbmissionInput.data.problemId,
+      code: subbmissionInput.data.code,
       activeContestId: subbmissionInput.data.activeContestId,
       testcases: {
-        connect: response.data,
-      },
+        createMany: {
+          data: response.data.map((testcase: any) => ({
+            token: testcase.token,
+            status_id: 1 // Set initial status as queued
+          }))
+        }
+      }
     },
     include: {
       testcases: true,
-     },
+    },
    });
    console.log("submission made for submission ID" , userId);
    
