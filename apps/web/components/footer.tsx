@@ -1,5 +1,4 @@
 import React from 'react'
-import { Button } from './ui/button'
 import Link from 'next/link'
 import { Github, Linkedin, Twitter } from 'lucide-react'
 
@@ -44,7 +43,7 @@ const Footer = () => {
               <Link href="https://github.com/SwarnenduG07" className="text-gray-400 hover:text-purple-400">
                 <Github size={20} />
               </Link>
-              <Link href="www.linkedin.com/in/swarnendug07" className="text-gray-400 hover:text-purple-400">
+              <Link href="https://www.linkedin.com/in/swarnendug07" className="text-gray-400 hover:text-purple-400">
                 <Linkedin size={20} />
               </Link>
               <Link href="https://x.com/Swarnendug07" className="text-gray-400 hover:text-purple-400">
