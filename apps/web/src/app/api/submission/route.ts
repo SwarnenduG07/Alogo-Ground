@@ -106,73 +106,102 @@ export async function POST(req:NextRequest) {
     subbmissionInput.data.languageId,
    );
 
-   problem.fullBoilerplateCode = problem.fullBoilerplateCode.replace(
+   if (!problem || !problem.inputs || !problem.outputs) {
+    return NextResponse.json(
+      { message: "Invalid problem configuration" },
+      { status: 400 }
+    );
+  }
+
+  // Prepare the submission code
+  const fullCode = problem.fullBoilerplateCode.replace(
     "##USER_CODE_HERE##",
     subbmissionInput.data.code
-   );
-   const response = await axios.post(
-    `${JUDGE0_URI}/submissions/batch?base64_encoded=false`,
-    {
-      submissions: problem.inputs.map((input: any, index: number) => ({
-        language_id: LANGUAGE_MAPPING[subbmissionInput.data.languageId]?.judge0,
-        source_code: problem.fullBoilerplateCode.replace(
-          "##INPUT_FILE_INDEX##",
-          index.toString()
-        ),
-        expected_output: problem.outputs[index],
-        stdin: input
-      })),
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY!,
-      }
-    }
-   );
+  );
 
-   if (!response.data || !Array.isArray(response.data)) {
-    return NextResponse.json(
+  try {
+    // Validate code is not empty
+    if (!subbmissionInput.data.code?.trim()) {
+      return NextResponse.json(
+        { message: "Code cannot be empty" },
+        { status: 400 }
+      );
+    }
+
+    const response = await axios.post(
+      `${JUDGE0_URI}/submissions/batch?base64_encoded=false`,
       {
-        message: "Invalid response from Judge0",
-        error: response.data
+        submissions: problem.inputs.map((input: string, index: number) => ({
+          language_id: LANGUAGE_MAPPING[subbmissionInput.data.languageId]?.judge0,
+          source_code: fullCode.replace(
+            "##INPUT_FILE_INDEX##",
+            index.toString()
+          ),
+          expected_output: problem.outputs[index],
+          stdin: input,
+          memory_limit: 256000, // 256MB
+          cpu_time_limit: 2, // 2 seconds
+          wall_time_limit: 5, // 5 seconds
+          enable_network: false,
+          compiler_options: "-O2", // Optimization level 2
+          redirect_stderr_to_stdout: true,
+        })),
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+          "X-RapidAPI-Key": process.env.RAPIDAPI_KEY!,
+        }
+      }
+    );
+
+    if (!response.data || !Array.isArray(response.data)) {
+      throw new Error("Invalid Judge0 response");
+    }
+
+    const submission = await dbCLient.submission.create({
+      data: {
+        userId: session.user.id,
+        problemId: subbmissionInput.data.problemId,
+        code: subbmissionInput.data.code,
+        status: "PENDING",
+        time: null,
+        memory: null,
+        testcases: {
+          createMany: {
+            data: response.data.map((testcase: any) => ({
+              token: testcase.token,
+              status_id: 1,
+              time: null,
+              memory: null,
+              stdout: null,
+              stderr: null
+            }))
+          }
+        }
+      },
+      include: {
+        testcases: true,
+      },
+    });
+
+    return NextResponse.json(
+      { id: submission.id },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Submission error:", error?.response?.data || error);
+    return NextResponse.json(
+      { 
+        message: "Submission failed", 
+        error: error?.response?.data?.message || error.message 
       },
       { status: 500 }
     );
-   }
-
-   const submission = await dbCLient.submission.create({
-    data: {
-      userId: session.user.id,
-      problemId: subbmissionInput.data.problemId,
-      code: subbmissionInput.data.code,
-      activeContestId: subbmissionInput.data.activeContestId,
-      testcases: {
-        createMany: {
-          data: response.data.map((testcase: any) => ({
-            token: testcase.token,
-            status_id: 1 // Set initial status as queued
-          }))
-        }
-      }
-    },
-    include: {
-      testcases: true,
-    },
-   });
-   console.log("submission made for submission ID" , userId);
-   
-   return NextResponse.json(
-    {
-      message: "Submission made",
-      id: submission.id,
-    },
-    {
-      status: 200,
-    }
-   )
+  }
 }
+
 export async function GET(req: NextRequest) {
    const session = await getServerSession(authOptions);
    if(!session?.user) {
@@ -199,30 +228,68 @@ export async function GET(req: NextRequest) {
        }
      );
    }
-  let submission = await dbCLient.submission.findUnique({
-    where: {
-      id: submissionId,
-    },
-    include: {
-      testcases: true,
-    },
-  });
-  if(!submission) {
-    return NextResponse.json(
-      {
-        message: "Submission not found",
+  try {
+    let submission = await dbCLient.submission.findUnique({
+      where: { id: submissionId },
+      include: {
+        testcases: {
+          orderBy: { token: 'asc' }
+        }
       },
-      {
-        status: 404,
+    });
+
+    if (!submission) {
+      return NextResponse.json(
+        { message: "Submission not found" },
+        { status: 404 }
+      );
+    }
+
+    // Check Judge0 status for pending testcases
+    if (submission.status === "PENDING") {
+      for (const testcase of submission.testcases) {
+        try {
+          const judge0Response = await axios.get(
+            `${JUDGE0_URI}/submissions/${testcase.token}?base64_encoded=false&fields=stdout,stderr,status_id,time,memory,message,compile_output`,
+            {
+              headers: {
+                "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+                "X-RapidAPI-Key": process.env.RAPIDAPI_KEY!,
+              }
+            }
+          );
+
+          const result = judge0Response.data;
+          if (!testcase.token) continue;
+          await dbCLient.submissions.update({
+            where: { token: testcase.token },
+            data: {
+              status_id: result.status?.id || testcase.status_id,
+              stdout: result.stdout || null,
+              stderr: result.stderr || null,
+              message: result.message || result.compile_output || null,
+              time: result.time ? parseFloat(result.time) : null,
+              memory: result.memory || null
+            }
+          });
+        } catch (error) {
+          console.error(`Error updating testcase ${testcase.token}:`, error);
+        }
       }
+
+      // Refresh submission data
+      submission = await dbCLient.submission.findUnique({
+        where: { id: submissionId },
+        include: { testcases: true },
+      });
+    }
+
+    return NextResponse.json({ submission });
+  } catch (error) {
+    console.error("Error processing submission:", error);
+    return NextResponse.json(
+      { message: "Error processing submission" },
+      { status: 500 }
     );
   }
-  return NextResponse.json(
-    {
-      submission,
-    },
-    {
-      status: 200,
-    }
-  );
 }
