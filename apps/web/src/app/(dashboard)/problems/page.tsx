@@ -1,5 +1,5 @@
 
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/Navbar";
 import { Problems } from "@/components/problem";
 
 export default function Page({
